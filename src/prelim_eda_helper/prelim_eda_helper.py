@@ -63,6 +63,36 @@ def num_num(num1, num2, data, title = '', lab_num1 = None, lab_num2 = None, tren
     string
         Spearman and Pearson's correlation numbers.
     '''
+
+def cat_cat(cat1, cat2, data, title = '', lab_cat1 = None, lab_cat2 = None, heatmap = True, barchart = True):
+    '''
+    Create a concatenated charts showing the heatmap of two numeric variables and the barcharts for occurrance of these variables.
+    Heatmap will be on the left and the two barcharts will be on the right in the same column.
+
+    Parameter
+    ---------
+    cat1: string
+        Name of the column name for the first categorical variable.
+    cat2: string
+        Name of the column name for the second categorical variable.
+    data: pandas.DataFrame
+        Target data frame for visualization.
+    title: string, default ''
+        Title for the chart.
+    lab_cat1: string
+        Axis label for the first categorical variable (x-axis).
+    lab_cat2: string
+        Axis label for the second categorical variable (y-axis).
+    heatmap: boolean, default True
+        Whether to include a heatmap plot or not.
+    barchart: boolean, default True
+        Whether to include the barchart or not.
+
+    Return
+    ------
+    altair.Chart
+        A concatenated chart consists of a heatmap and 2 barcharts.
+    '''
     
 def num_dist( col_num,  data, title = '', lab_num = None,  num_on_x = True, thresh_corr = 0.0, stat = True ):
     '''
