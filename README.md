@@ -19,7 +19,7 @@ $ pip install prelim_eda_helper
 
 - `num_num`: Creates a scatter plot given two numerical variables. The plot can provide regression trendline and include confidence interval bands. Spearman and Pearson's correlation will also be returned to aid the user to determining feature relationship.
 
-- `cat_cat`:
+- `cat_cat`: Creates concatenated charts showing the heatmap of two categorical variables and a barchart for occurrance of these variables.
 
 - `num_dist`: Creates a distribution plot of the given numeric variable and provides a statistical summary of the feature. In addition, the correlation values of the variable with other numeric features will be provided based on a given threshold.
 
