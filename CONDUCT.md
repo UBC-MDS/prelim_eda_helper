@@ -38,6 +38,8 @@ Instances of abusive, harassing, or otherwise unacceptable behavior may be repor
 
 Project maintainers who do not follow or enforce the Code of Conduct in good faith may face temporary or permanent repercussions as determined by other members of the project's leadership.
 
+Instances of abusive, harassing, or otherwise unacceptable behaviour may be reported by contacting the MDS team. An email to kvarada@cs.ubc.ca will be seen by Varada Kolhatkar, and an email to lourenzutti@stat.ubc.ca will be seen by Rodolfo Lourenzutti. To report a MDS code of conduct violation that will not be seen by Varada Kolhatkar or Rodolfo Lourenzutti, an alternative contact person is Milad Maymay, MDS Director, Program Operations & Student Management. His email is maymay@science.ubc.ca .
+
 ## Attribution
 
 This Code of Conduct is adapted from the [Contributor Covenant homepage](http://contributor-covenant.org/version/1/4), version 1.4.
