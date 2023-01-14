@@ -7,6 +7,8 @@ helps, and credit will always be given.
 
 ### Report Bugs
 
+The best way to report a bug is to create an issue at : https://github.com/UBC-MDS/prelim_eda_helper/issues
+
 If you are reporting a bug, please include:
 
 * Your operating system name and version.
@@ -15,12 +17,12 @@ If you are reporting a bug, please include:
 
 ### Fix Bugs
 
-Look through the GitHub issues for bugs. Anything tagged with "bug" and "help
+Look through the [GitHub issues](https://github.com/UBC-MDS/prelim_eda_helper/issues) for bugs. Anything tagged with "bug" and "help
 wanted" is open to whoever wants to implement it.
 
 ### Implement Features
 
-Look through the GitHub issues for features. Anything tagged with "enhancement"
+Look through the [GitHub issues](https://github.com/UBC-MDS/prelim_eda_helper/issues) for features. Anything tagged with "enhancement"
 and "help wanted" is open to whoever wants to implement it.
 
 ### Write Documentation
@@ -30,6 +32,8 @@ part of the documentation, such as the official docs, docstrings, or even
 on the web in blog posts, articles, and such.
 
 ### Submit Feedback
+
+The best way to send feature is to create an issue at : https://github.com/UBC-MDS/prelim_eda_helper/issues
 
 If you are proposing a feature:
 
@@ -42,7 +46,14 @@ If you are proposing a feature:
 
 Ready to contribute? Here's how to set up `prelim_eda_helper` for local development.
 
-1. Download a copy of `prelim_eda_helper` locally.
+1. Fork the `prelim_eda_helper` repo on GitHub.
+
+2. Clone your fork locally:
+
+    ``` console 
+    $ git clone git@github.com:your_name_here/prelim_eda_helper.git
+    ```
+
 2. Install `prelim_eda_helper` using `poetry`:
 
     ```console
@@ -57,7 +68,18 @@ Ready to contribute? Here's how to set up `prelim_eda_helper` for local developm
 
 4. When you're done making changes, check that your changes conform to any code formatting requirements and pass any tests.
 
+    ```console 
+    poetry run pytest 
+    ```
+
+
 5. Commit your changes and open a pull request.
+
+    ```console
+    $ git add.
+    $ git commit -m "Your detailed description of your changes."
+    $ git push origin name-of-your-bugfix-or-feature
+    ```
 
 ## Pull Request Guidelines
 
@@ -70,4 +92,8 @@ Before you submit a pull request, check that it meets these guidelines:
 ## Code of Conduct
 
 Please note that the `prelim_eda_helper` project is released with a
-Code of Conduct. By contributing to this project you agree to abide by its terms.
+[Code of Conduct](Conduct.md). By contributing to this project you agree to abide by its terms.
+
+```python
+
+```

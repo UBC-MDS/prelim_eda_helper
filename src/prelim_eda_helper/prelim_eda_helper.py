@@ -31,6 +31,7 @@ def num_cat( v_num, v_cat, data, title = '', lab_num = None, lab_cat = None, vio
         A concatenated chart consists of a histogram and a boxplot.
     '''
 
+
 def num_num(num1, num2, data, title = '', lab_num1 = None, lab_num2 = None, trend = None, band = False):
     '''
     Creates a scatter plot given two numerical features. Plot can provide regression trendline and highlight outliers. 
@@ -61,4 +62,30 @@ def num_num(num1, num2, data, title = '', lab_num1 = None, lab_num2 = None, tren
         A chart consists of a scatterplot with out without trendlines.
     string
         Spearman and Pearson's correlation numbers.
+    '''
+    
+def num_dist( col_num,  data, title = '', lab_num = None,  num_on_x = True, thresh_corr = 0.0, stat = True ):
+    '''
+    Create a distribution plot of the numeric variable in general and statistical summary  of the feature .
+    In addition, the  correlation values  of the variable with other features based on the threshold values 
+
+    Parameter
+    ---------
+    col_num: string
+        Name of the column name for the numeric variable.
+    data: pandas.DataFrame
+        Target data frame for visualization.
+    title: string, default ''
+        Title for the chart.
+    lab_num: string
+        Axis label for the numeric variable.
+    thresh_corr: Float, default 0.0
+        value to check for correlation 
+    stat : Boolean , default True 
+        whether to print summary statistic or not 
+    
+    Return
+    ------
+    altair.Chart and Table 
+        A histogram chart and a table to display correlation and statistical summary
     '''
