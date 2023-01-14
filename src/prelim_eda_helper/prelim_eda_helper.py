@@ -1,8 +1,8 @@
 def num_cat( v_num, v_cat, data, title = '', lab_num = None, lab_cat = None, violin = True, num_on_x = True, stat = True):
     '''
-    Create a pair of charts showing the distribution of the numeric variable in general and when grouped by the categorical variable.
+    Create a pair of charts showing the distribution of the numeric variable and when grouped by the categorical variable.
     The one of the left is a histogram while the one on the left will be a boxplot on top of a violin plot.
-    Basic test statistics will be printed for user as a reference.
+    Basic test statistics will be printed for user reference.
 
     Parameter
     ---------
@@ -29,6 +29,8 @@ def num_cat( v_num, v_cat, data, title = '', lab_num = None, lab_cat = None, vio
     ------
     altair.Chart
         A concatenated chart consists of a histogram and a boxplot.
+    string
+        Test statistics
     '''
 
 
@@ -66,7 +68,7 @@ def num_num(num1, num2, data, title = '', lab_num1 = None, lab_num2 = None, tren
 
 def cat_cat(cat1, cat2, data, title = '', lab_cat1 = None, lab_cat2 = None, heatmap = True, barchart = True):
     '''
-    Create a concatenated charts showing the heatmap of two numeric variables and the barcharts for occurrance of these variables.
+    Create concatenated charts showing the heatmap of two categorical variables and the barcharts for occurrance of these variables.
     Heatmap will be on the left and the two barcharts will be on the right in the same column.
 
     Parameter
@@ -97,7 +99,7 @@ def cat_cat(cat1, cat2, data, title = '', lab_cat1 = None, lab_cat2 = None, heat
 def num_dist( col_num,  data, title = '', lab_num = None,  num_on_x = True, thresh_corr = 0.0, stat = True ):
     '''
     Create a distribution plot of the numeric variable in general and statistical summary  of the feature .
-    In addition, the  correlation values  of the variable with other features based on the threshold values 
+    In addition, the  correlation values of the input variable with other features based on a threshold will also be returned
 
     Parameter
     ---------
@@ -118,4 +120,6 @@ def num_dist( col_num,  data, title = '', lab_num = None,  num_on_x = True, thre
     ------
     altair.Chart and Table 
         A histogram chart and a table to display correlation and statistical summary
+    string
+        correlation values to other features
     '''
