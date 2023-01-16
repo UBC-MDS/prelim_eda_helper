@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import altair as alt
 from scipy import stats
-import tabulate
+from tabulate import tabulate
 
 def num_cat( v_num, v_cat, data, title_hist = '', title_boxplot = '', lab_num = None, lab_cat = None, num_on_x = True, stat = True):
     '''
@@ -65,12 +65,12 @@ def num_cat( v_num, v_cat, data, title_hist = '', title_boxplot = '', lab_num = 
     
     group_list = data[ v_cat].unique()
     n_group = len( group_list)
+
     if n_group == 0:
         print( 'Please use a data frame with data inside.\n')
     elif n_group == 1:
         print( 'Please consider using prelim_eda_helper.num_dist when only 1 class is used\n.')
-    
-    if stat == True:
+    elif stat == True:
         if n_group == 2:
             if np.var( data[ v_num]) == 0:
                 print( 'A t test is not performed as the total variance is 0.\n')
