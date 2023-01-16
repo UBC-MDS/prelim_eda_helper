@@ -15,13 +15,13 @@ $ pip install prelim_eda_helper
 
 ## Main Functions
 
-- `num_cat`: Create a pair of plots showing the distribution of the numeric variable when grouped by the categorical variable. Output includes a histogram and boxplot. In addition, basic test statistics will be provided for user reference.
+- `num_dist_by_cat`: Create a pair of plots showing the distribution of the numeric variable when grouped by the categorical variable. Output includes a histogram and boxplot. In addition, basic test statistics will be provided for user reference.
 
-- `num_num`: Creates a scatter plot given two numerical variables. The plot can provide regression trendline and include confidence interval bands. Spearman and Pearson's correlation will also be returned to aid the user to determining feature relationship.
+- `num_dist_scatter`: Creates a scatter plot given two numerical variables. The plot can provide regression trendline and include confidence interval bands. Spearman and Pearson's correlation will also be returned to aid the user to determining feature relationship.
 
-- `cat_cat`: Creates concatenated charts showing the heatmap of two categorical variables and a barchart for occurrance of these variables.
+- `cat_dist_heatmap`: Creates concatenated charts showing the heatmap of two categorical variables and a barchart for occurrance of these variables.
 
-- `num_dist`: Creates a distribution plot of the given numeric variable and provides a statistical summary of the feature. In addition, the correlation values of the variable with other numeric features will be provided based on a given threshold.
+- `num_dist_summary`: Creates a distribution plot of the given numeric variable and provides a statistical summary of the feature. In addition, the correlation values of the variable with other numeric features will be provided based on a given threshold.
 
 ## Usage
 
