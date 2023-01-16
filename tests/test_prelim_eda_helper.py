@@ -17,6 +17,8 @@ test_data = pd.DataFrame(
 )
 
 def test_num_cat():
+    assert type( num_cat( v_cat = 'cat_2groups', v_num = 'num', data = test_data)).__name__ == 'HConcatChart'
+
     capturedOutput = StringIO()
     sys.stdout = capturedOutput
     num_cat( v_cat = 'cat', v_num = 'num', data = test_data_0_group)
@@ -36,4 +38,14 @@ def test_num_cat():
     sys.stdout = capturedOutput
     num_cat( v_cat = 'cat_2groups', v_num = 'num', data = test_data)
     assert( capturedOutput.getvalue()[:30].strip() == 'A t-test assuming equal varian'.strip())
+
+    capturedOutput = StringIO()
+    sys.stdout = capturedOutput
+    num_cat( v_cat = 'cat_3groups', v_num = 'num_0_within_group_variance', data = test_data)
+    assert( capturedOutput.getvalue().strip() == 'F statistic is not defined when within group variance is 0 in at least one of the groups.\n'.strip())
+
+    capturedOutput = StringIO()
+    sys.stdout = capturedOutput
+    num_cat( v_cat = 'cat_3groups', v_num = 'num', data = test_data)
+    assert( capturedOutput.getvalue()[:30].strip() == 'An one-way ANOVA yields an F s'.strip())
     # sys.stdout = sys.__stdout__ # Restore the print output target

@@ -92,7 +92,7 @@ def num_cat( v_num, v_cat, data, title_hist = '', title_boxplot = '', lab_num = 
             else:
                 F, p = stats.f_oneway( *[ list( i) for i in vectors.values()])
                 table = [ [ 'One-way ANOVA', F, p]]
-                print( f'An one-way ANOVA yields an F score of {F:.2f} with a p-value pf {p:.4f}.')
+                print( f'An one-way ANOVA yields an F score of {F:.2f} with a p-value of {p:.4f}.')
                 print( tabulate( table, headers = [ 'Test', 'F', 'p']))
         print()
         
