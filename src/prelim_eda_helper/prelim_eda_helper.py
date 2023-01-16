@@ -1,4 +1,10 @@
-def num_cat( v_num, v_cat, data, title = '', lab_num = None, lab_cat = None, violin = True, num_on_x = True, stat = True):
+import numpy as np
+import pandas as pd
+import altair as alt
+from scipy import stats
+from tabulate import tabulate
+
+def num_cat( v_num, v_cat, data, title_hist = '', title_boxplot = '', lab_num = None, lab_cat = None, num_on_x = True, stat = True):
     '''
     Create a pair of charts showing the distribution of the numeric variable and when grouped by the categorical variable.
     The one of the left is a histogram while the one on the left will be a boxplot on top of a violin plot.
@@ -12,14 +18,14 @@ def num_cat( v_num, v_cat, data, title = '', lab_num = None, lab_cat = None, vio
         Name of the column name for the categorial variable.
     data: pandas.DataFrame
         Target data frame for visualization.
-    title: string, default ''
-        Title for the chart.
+    title_hist: string, default ''
+        Title for the histogram.
+    title_boxplot: string, default ''
+        Title for the boxplot
     lab_num: string
         Axis label for the numeric variable.
     lab_cat: string
         Axis label for the categorical variable.
-    violin: boolean, default True
-        Whether include a violin plot or not.
     num_on_x: boolean, default True
         Whether the numeric variable is put on the x-axis in the boxplot.
     stat: boolean, default True
@@ -32,6 +38,65 @@ def num_cat( v_num, v_cat, data, title = '', lab_num = None, lab_cat = None, vio
     string
         Test statistics
     '''
+    hist = alt.Chart( data, title = title_hist).mark_bar().encode(
+        x = alt.X( v_num, bin = alt.Bin( maxbins = 20), title = lab_num),
+        y = alt.Y( 'count()', title = lab_cat)
+    ).properties(
+        height = 300,
+        width = 300
+    )
+    
+    if num_on_x == True:
+        boxplot = alt.Chart( data, title = title_boxplot).mark_boxplot( size = 50).encode(
+            x = alt.X( v_num, scale = alt.Scale( zero = False), title = lab_num),
+            y = alt.Y( f'{v_cat}:N', title = lab_cat)
+        ).properties(
+            height = 300,
+            width = 300
+        )
+    else:
+        boxplot = alt.Chart( data, title = title_boxplot).mark_boxplot( size = 50).encode(
+            y = alt.Y( v_num, scale = alt.Scale( zero = False), title = lab_num),
+            x = alt.X( f'{v_cat}:N', title = lab_cat)
+        ).properties(
+            height = 300,
+            width = 300
+        )
+    
+    group_list = data[ v_cat].unique()
+    n_group = len( group_list)
+
+    if n_group == 0:
+        print( 'Please use a data frame with data inside.\n')
+    elif n_group == 1:
+        print( 'Please consider using prelim_eda_helper.num_dist when only 1 class is used\n.')
+    elif stat == True:
+        if n_group == 2:
+            if np.var( data[ v_num]) == 0:
+                print( 'A t test is not performed as the total variance is 0.\n')
+            else:
+                group_a = data[ data[ v_cat] == group_list[ 0]]
+                group_b = data[ data[ v_cat] == group_list[ 1]]
+                t_eq, p_eq = stats.ttest_ind( group_a[ v_num], group_b[ v_num])
+                t_w, p_w = stats.ttest_ind( group_a[ v_num], group_b[ v_num], equal_var = False)
+                table = [ [ 'Equal var. assumed', t_eq, p_eq], [ 'Equal var. not assumed', t_w, p_w]]
+                print( f'A t-test assuming equal variance yields a t value of {t_eq:.2f} with a p-value of {p_eq:.4f}.')
+                print( f'Assuming inequal variances, the Welch\'s t-test yields a t value of {t_w:.2f} with a p-value of {p_w:.4f}.')
+                print( tabulate( table, headers = [ 'Test', 't', 'p']))
+        elif n_group > 2:
+            vectors = dict()
+            for i in group_list:
+                vectors[ i] = data[ data[ v_cat] == i][ v_num]
+            if (np.array( [ np.var( i) for i in list( vectors.values())]) == 0).any():
+                print( 'F statistic is not defined when within group variance is 0 in at least one of the groups.\n')
+            else:
+                F, p = stats.f_oneway( *[ list( i) for i in vectors.values()])
+                table = [ [ 'One-way ANOVA', F, p]]
+                print( f'An one-way ANOVA yields an F score of {F:.2f} with a p-value of {p:.4f}.')
+                print( tabulate( table, headers = [ 'Test', 'F', 'p']))
+        print()
+        
+    return hist | boxplot
 
 
 def num_num(num1, num2, data, title = '', lab_num1 = None, lab_num2 = None, trend = None, band = False):
