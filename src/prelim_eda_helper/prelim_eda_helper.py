@@ -4,6 +4,12 @@ import altair as alt
 from scipy import stats
 from tabulate import tabulate
 
+def initialize_helper():
+    '''
+    A function to enable plotting for large data sets.
+    '''
+    alt.data_transformers.enable( 'data_server')
+
 def num_cat( v_num, v_cat, data, title_hist = '', title_boxplot = '', lab_num = None, lab_cat = None, num_on_x = True, stat = True):
     '''
     Create a pair of charts showing the distribution of the numeric variable and when grouped by the categorical variable.
