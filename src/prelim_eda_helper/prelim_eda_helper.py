@@ -62,10 +62,16 @@ def num_cat( v_num, v_cat, data, title_hist = '', title_boxplot = '', lab_num = 
             height = 300,
             width = 300
         )
+
+    group_list = data[ v_cat].unique()
+    n_group = len( group_list)
+    if n_group == 0:
+        print( 'Please use a data frame with data inside.\n')
+    elif n_group == 1:
+        print( 'Please consider using prelim_eda_helper.num_dist when only 1 class is used\n.')
     
     if stat == True:
-        group_list = data[ v_cat].unique()
-        if len( group_list) == 2:
+        if n_group == 2:
             group_a = data[ data[ v_cat] == group_list[ 0]]
             group_b = data[ data[ v_cat] == group_list[ 1]]
             t_eq, p_eq = stats.ttest_ind( group_a[ v_num], group_b[ v_num])
@@ -74,7 +80,7 @@ def num_cat( v_num, v_cat, data, title_hist = '', title_boxplot = '', lab_num = 
             print( f'A t-test assuming equal variance yields a t value of {t_eq:.2f} with a p-value of {p_eq:.4f}.')
             print( f'Assuming inequal variances, the Welch\'s t-test yields a t value of {t_w:.2f} with a p-value of {p_w:.4f}.')
             print( tabulate( table, headers = [ 'Test', 't', 'p']))
-        else:
+        elif n_group > 2:
             vectors = dict()
             for i in group_list:
                 vectors[ i] = data[ data[ v_cat] == i][ v_num]
@@ -82,6 +88,8 @@ def num_cat( v_num, v_cat, data, title_hist = '', title_boxplot = '', lab_num = 
             table = [ [ 'One-way ANOVA', F, p]]
             print( f'An one-way ANOVA yields an F score of {F:.2f} with a p-value pf {p:.4f}.')
             print( tabulate( table, headers = [ 'Test', 'F', 'p']))
+        print()
+
     return hist | boxplot
 
 
