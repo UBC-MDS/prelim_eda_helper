@@ -62,7 +62,7 @@ def num_cat( v_num, v_cat, data, title_hist = '', title_boxplot = '', lab_num = 
             height = 300,
             width = 300
         )
-
+    
     group_list = data[ v_cat].unique()
     n_group = len( group_list)
     if n_group == 0:
@@ -72,24 +72,30 @@ def num_cat( v_num, v_cat, data, title_hist = '', title_boxplot = '', lab_num = 
     
     if stat == True:
         if n_group == 2:
-            group_a = data[ data[ v_cat] == group_list[ 0]]
-            group_b = data[ data[ v_cat] == group_list[ 1]]
-            t_eq, p_eq = stats.ttest_ind( group_a[ v_num], group_b[ v_num])
-            t_w, p_w = stats.ttest_ind( group_a[ v_num], group_b[ v_num], equal_var = False)
-            table = [ [ 'Equal var. assumed', t_eq, p_eq], [ 'Equal var. not assumed', t_w, p_w]]
-            print( f'A t-test assuming equal variance yields a t value of {t_eq:.2f} with a p-value of {p_eq:.4f}.')
-            print( f'Assuming inequal variances, the Welch\'s t-test yields a t value of {t_w:.2f} with a p-value of {p_w:.4f}.')
-            print( tabulate( table, headers = [ 'Test', 't', 'p']))
+            if np.var( data[ v_num]) == 0:
+                print( 'A t test is not performed as the total variance is 0.\n')
+            else:
+                group_a = data[ data[ v_cat] == group_list[ 0]]
+                group_b = data[ data[ v_cat] == group_list[ 1]]
+                t_eq, p_eq = stats.ttest_ind( group_a[ v_num], group_b[ v_num])
+                t_w, p_w = stats.ttest_ind( group_a[ v_num], group_b[ v_num], equal_var = False)
+                table = [ [ 'Equal var. assumed', t_eq, p_eq], [ 'Equal var. not assumed', t_w, p_w]]
+                print( f'A t-test assuming equal variance yields a t value of {t_eq:.2f} with a p-value of {p_eq:.4f}.')
+                print( f'Assuming inequal variances, the Welch\'s t-test yields a t value of {t_w:.2f} with a p-value of {p_w:.4f}.')
+                print( tabulate( table, headers = [ 'Test', 't', 'p']))
         elif n_group > 2:
             vectors = dict()
             for i in group_list:
                 vectors[ i] = data[ data[ v_cat] == i][ v_num]
-            F, p = stats.f_oneway( *[ list( i) for i in vectors.values()])
-            table = [ [ 'One-way ANOVA', F, p]]
-            print( f'An one-way ANOVA yields an F score of {F:.2f} with a p-value pf {p:.4f}.')
-            print( tabulate( table, headers = [ 'Test', 'F', 'p']))
+            if (np.array( [ np.var( i) for i in list( vectors.values())]) == 0).any():
+                print( 'F statistic is not defined when within group variance is 0 in at least one of the groups.\n')
+            else:
+                F, p = stats.f_oneway( *[ list( i) for i in vectors.values()])
+                table = [ [ 'One-way ANOVA', F, p]]
+                print( f'An one-way ANOVA yields an F score of {F:.2f} with a p-value pf {p:.4f}.')
+                print( tabulate( table, headers = [ 'Test', 'F', 'p']))
         print()
-
+        
     return hist | boxplot
 
 
