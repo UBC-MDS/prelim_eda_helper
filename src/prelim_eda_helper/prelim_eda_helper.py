@@ -10,7 +10,7 @@ def initialize_helper():
     '''
     alt.data_transformers.enable( 'data_server')
 
-def num_cat( v_num, v_cat, data, title_hist = '', title_boxplot = '', lab_num = None, lab_cat = None, num_on_x = True, stat = True):
+def num_dist_by_cat( v_num, v_cat, data, title_hist = '', title_boxplot = '', lab_num = None, lab_cat = None, num_on_x = True, stat = True):
     '''
     Create a pair of charts showing the distribution of the numeric variable and when grouped by the categorical variable.
     The one of the left is a histogram while the one on the left will be a boxplot on top of a violin plot.
@@ -105,7 +105,7 @@ def num_cat( v_num, v_cat, data, title_hist = '', title_boxplot = '', lab_num = 
     return hist | boxplot
 
 
-def num_num(num1, num2, data, title = '', lab_num1 = None, lab_num2 = None, trend = None, band = False):
+def num_dist_scatter(num1, num2, data, title = '', lab_num1 = None, lab_num2 = None, trend = None, band = False):
     '''
     Creates a scatter plot given two numerical features. Plot can provide regression trendline and highlight outliers. 
     Spearman and Pearson's correlation will also be returned to aid the user to determining feature relationship.
@@ -137,7 +137,7 @@ def num_num(num1, num2, data, title = '', lab_num1 = None, lab_num2 = None, tren
         Spearman and Pearson's correlation numbers.
     '''
 
-def cat_cat(cat1, cat2, data, title = '', lab_cat1 = None, lab_cat2 = None, heatmap = True, barchart = True):
+def cat_dist_heatmap(cat1, cat2, data, title = '', lab_cat1 = None, lab_cat2 = None, heatmap = True, barchart = True):
     '''
     Create concatenated charts showing the heatmap of two categorical variables and the barcharts for occurrance of these variables.
     Heatmap will be on the left and the two barcharts will be on the right in the same column.
@@ -167,10 +167,10 @@ def cat_cat(cat1, cat2, data, title = '', lab_cat1 = None, lab_cat2 = None, heat
         A concatenated chart consists of a heatmap and 2 barcharts.
     '''
     
-def num_dist( col_num,  data, title = '', lab_num = None,  num_on_x = True, thresh_corr = 0.0, stat = True ):
+def num_dist_summary( col_num,  data, title = '', lab_num = None,  num_on_x = True, thresh_corr = 0.0, stat = True ):
     '''
-    Create a distribution plot of the numeric variable in general and statistical summary  of the feature .
-    In addition, the  correlation values of the input variable with other features based on a threshold will also be returned
+    Create a distribution plot of the numeric variable in general and statistical summary of the feature.
+    In addition, the correlation values of the input variable with other features based on a threshold will also be returned.
 
     Parameter
     ---------
