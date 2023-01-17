@@ -1,13 +1,18 @@
 # prelim_eda_helper
 
-This package is a preliminary exploratory data analysis tool to make useful feature comparison plots and provide relevant information to simplify an otherwise tedious EDA step of any data science project. Specifically this package allows users to target any two features, whether they are numeric or categorical, and create comparison plots that provide useful information such as Spearman and Pearson's correlation numbers.
+This package is a preliminary exploratory data analysis (EDA) tool to make useful feature EDA plots and provide relevant information to simplify an otherwise tedious EDA step of any data science project. Specifically this package allows users to target any two features, whether they are numeric or categorical, and create visualization plots supplemented with useful summary and test statistics.
 
 This package provides a streamlined and easy to use solution for basic EDA tasks that would otherwise require significant amount of coding to achieve. Similar packages can be found published on [PyPi](https://pypi.org/search/?q=eda&page=1) such as the following:
 
 - [eda-viz](https://github.com/ajaymaity/eda-viz)
 - [QuickDA](https://github.com/sid-the-coder/QuickDA)
 
+`prelim_eda_helper` enables user to write quick visualization queries. At the same time, as we understand visually strong effects on graphs are not necessarily statistically meaningful, `prelim_eda_helper` is designed to combine graphic visualizations with preliminary statistical test results. We aim to create a helper package to really help researchers to get a quick sense of how our data look like, without making charts and doing tests separately in earlier stages of projects. We believe the combination of graphical and statistical output is what makes `prelim_eda_helper` a unique yet handy helper package.
+
+To achive this goal, `prelim_eda_helper` creates charts with the visualization library [`altair`](https://altair-viz.github.io/) and conducts statistical tests with ['scipy'](https://scipy.org/).
+
 ## Usage
+
 ### Installation
 
 ```bash
