@@ -10,7 +10,7 @@ def initialize_helper():
     '''
     alt.data_transformers.enable( 'data_server')
 
-def num_dist_by_cat( v_num, v_cat, data, title_hist = '', title_boxplot = '', lab_num = None, lab_cat = None, num_on_x = True, stat = True):
+def num_dist_by_cat(v_num, v_cat, data, title_hist = '', title_boxplot = '', lab_num = None, lab_cat = None, num_on_x = True, stat = True):
     '''
     Create a pair of charts showing the distribution of the numeric variable and when grouped by the categorical variable.
     The one of the left is a histogram while the one on the left will be a boxplot on top of a violin plot.
