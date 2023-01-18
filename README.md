@@ -1,31 +1,59 @@
 # prelim_eda_helper
 
-This package is a preliminary exploratory data analysis tool to make useful feature comparison plots and provide relevant information to simplify an otherwise tedious EDA step of any data science project. Specifically this package allows users to target any two features, whether they are numeric or categorical, and create comparison plots that provide useful information such as Spearman and Pearson's correlation numbers.
+This package is a preliminary exploratory data analysis (EDA) tool to make useful feature EDA plots and provide relevant information to simplify an otherwise tedious EDA step of any data science project. Specifically this package allows users to target any two features, whether they are numeric or categorical, and create visualization plots supplemented with useful summary and test statistics.
 
 This package provides a streamlined and easy to use solution for basic EDA tasks that would otherwise require significant amount of coding to achieve. Similar packages can be found published on [PyPi](https://pypi.org/search/?q=eda&page=1) such as the following:
 
 - [eda-viz](https://github.com/ajaymaity/eda-viz)
 - [QuickDA](https://github.com/sid-the-coder/QuickDA)
 
-## Installation
+`prelim_eda_helper` enables user to write quick visualization queries. At the same time, as we understand visually strong effects on graphs are not necessarily statistically meaningful, `prelim_eda_helper` is designed to combine graphic visualizations with preliminary statistical test results. We aim to create a helper package to really help researchers to get a quick sense of how our data look like, without making charts and doing tests separately in earlier stages of projects. We believe the combination of graphical and statistical output is what makes `prelim_eda_helper` a unique yet handy helper package.
+
+To achive this goal, `prelim_eda_helper` creates charts with the visualization library [`altair`](https://altair-viz.github.io/) and conducts statistical tests with ['scipy'](https://scipy.org/).
+
+## Usage
+
+### Installation
 
 ```bash
 $ pip install prelim_eda_helper
 ```
 
-## Main Functions
+### `num_dist_by_cat`
 
-- `num_dist_by_cat`: Create a pair of plots showing the distribution of the numeric variable when grouped by the categorical variable. Output includes a histogram and boxplot. In addition, basic test statistics will be provided for user reference.
+Creates a pair of plots showing the distribution of the numeric variable when grouped by the categorical variable. Output includes a histogram and boxplot. In addition, basic test statistics will be provided for user reference.
 
-- `num_dist_scatter`: Creates a scatter plot given two numerical variables. The plot can provide regression trendline and include confidence interval bands. Spearman and Pearson's correlation will also be returned to aid the user to determining feature relationship.
+```py
+from prelim_eda_helper import num_dist_by_cat
+num_dist_by_cat(v_num = 'x', v_cat = 'group', data = data, title_hist = 'Distribution of X', title_boxplot = 'X Seperated by Group', lab_num = 'X', lab_cat = 'Group', num_on_x = True, stat = True)
+```
 
-- `cat_dist_heatmap`: Creates concatenated charts showing the heatmap of two categorical variables and a barchart for occurrance of these variables.
+### `num_dist_scatter`
 
-- `num_dist_summary`: Creates a distribution plot of the given numeric variable and provides a statistical summary of the feature. In addition, the correlation values of the variable with other numeric features will be provided based on a given threshold.
+Creates a scatter plot given two numerical variables. The plot can provide regression trendline and include confidence interval bands. Spearman and Pearson's correlation will also be returned to aid the user to determining feature relationship.
 
-## Usage
+```py
+from prelim_eda_helper import num_dist_scatter
+num_dist_scatter(num1 = 'x', num2 = 'y', data = data, title = 'Scatter plot with X and Y', lab_num1 = 'X', lab_num2 = 'Y', trend = None, band = False)
+```
 
-Milestone 2
+### `cat_dist_heatmap`
+
+Creates concatenated charts showing the heatmap of two categorical variables and a barchart for occurrance of these variables.
+
+```py
+from prelim_eda_helper import cat_dist_heatmap
+cat_dist_heatmap(cat1 = 'group1', cat2 = 'group2', data = data, title = 'How are Group1 and Group2 distributed?', lab_cat1 = 'group1', lab_cat2 = 'group2', heatmap = True, barchart = True)
+```
+
+### `num_dist_summary`
+
+Creates a distribution plot of the given numeric variable and provides a statistical summary of the feature. In addition, the correlation values of the variable with other numeric features will be provided based on a given threshold.
+
+```py
+from prelim_eda_helper import num_dist_summary
+num_dist_summary(col_num = 'x', data = data, title = 'Distribution of X', lab_num = 'X',  num_on_x = True, thresh_corr = 0.0, stat = True )
+```
 
 ## Contributing
 

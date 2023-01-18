@@ -1,4 +1,4 @@
-from prelim_eda_helper.prelim_eda_helper import num_cat
+from prelim_eda_helper.prelim_eda_helper import num_dist_by_cat
 import pandas as pd
 from io import StringIO
 import sys
