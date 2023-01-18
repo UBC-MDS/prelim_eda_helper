@@ -19,35 +19,35 @@ test_data = pd.DataFrame(
 )
 
 def test_num_cat():
-    assert type( num_cat( v_cat = 'cat_2', v_num = 'num_variable', data = test_data)).__name__ == 'HConcatChart'
+    assert type( num_dist_by_cat( v_cat = 'cat_2', v_num = 'num_variable', data = test_data)).__name__ == 'HConcatChart'
 
     capturedOutput = StringIO()
     sys.stdout = capturedOutput
-    num_cat( v_cat = 'cat_empty', v_num = 'num_empty', data = test_data_empty)
+    num_dist_by_cat( v_cat = 'cat_empty', v_num = 'num_empty', data = test_data_empty)
     assert capturedOutput.getvalue().strip() == 'Please use a data frame with data inside.\n'.strip()
 
     capturedOutput = StringIO()
     sys.stdout = capturedOutput
-    num_cat( v_cat = 'cat_1', v_num = 'num_variable', data = test_data)
+    num_dist_by_cat( v_cat = 'cat_1', v_num = 'num_variable', data = test_data)
     assert( capturedOutput.getvalue().strip() == 'Please consider using prelim_eda_helper.num_dist when only 1 class is used\n.'.strip())
 
     capturedOutput = StringIO()
     sys.stdout = capturedOutput
-    num_cat( v_cat = 'cat_2', v_num = 'num_constant', data = test_data)
+    num_dist_by_cat( v_cat = 'cat_2', v_num = 'num_constant', data = test_data)
     assert( capturedOutput.getvalue().strip() == 'A t test is not performed as the total variance is 0.\n'.strip())
 
     capturedOutput = StringIO()
     sys.stdout = capturedOutput
-    num_cat( v_cat = 'cat_2', v_num = 'num_variable', data = test_data)
+    num_dist_by_cat( v_cat = 'cat_2', v_num = 'num_variable', data = test_data)
     assert( capturedOutput.getvalue()[:30].strip() == 'A t-test assuming equal varian'.strip())
 
     capturedOutput = StringIO()
     sys.stdout = capturedOutput
-    num_cat( v_cat = 'cat_3', v_num = 'num_variance', data = test_data)
+    num_dist_by_cat( v_cat = 'cat_3', v_num = 'num_variance', data = test_data)
     assert( capturedOutput.getvalue().strip() == 'F statistic is not defined when within group variance is 0 in at least one of the groups.\n'.strip())
 
     capturedOutput = StringIO()
     sys.stdout = capturedOutput
-    num_cat( v_cat = 'cat_3', v_num = 'num_variable', data = test_data)
+    num_dist_by_cat( v_cat = 'cat_3', v_num = 'num_variable', data = test_data)
     assert( capturedOutput.getvalue()[:30].strip() == 'An one-way ANOVA yields an F s'.strip())
     # sys.stdout = sys.__stdout__ # Restore the print output target
