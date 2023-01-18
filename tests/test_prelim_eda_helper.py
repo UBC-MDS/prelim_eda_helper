@@ -11,7 +11,7 @@ test_data = pd.DataFrame(
         'cat_2': [ 1, 1, 1, 2, 2, 2],
         'cat_3': [ 1, 1, 2, 2, 3, 3],
         'cat_4': [ 'one', 'one', 'two', 'two', 'three', 'three'],
-        'cat_5': [ 'one', 'one', 'one', 'two', 'two', 'two', 'two'],
+        'cat_5': [ 'one', 'one', 'one', 'two', 'two', 'two'],
         'num_constant': [ 20, 20, 20, 20, 20, 20],
         'num_variance': [ 20, 20, 21, 22, 23, 24],
         'num_variable': [ 10, 20, 50, 100, 200, 300]
