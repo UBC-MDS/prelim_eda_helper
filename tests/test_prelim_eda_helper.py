@@ -18,7 +18,7 @@ test_data = pd.DataFrame(
     }
 )
 
-def test_num_cat():
+def test_num_dist_by_cat():
     assert type( num_dist_by_cat( v_cat = 'cat_2', v_num = 'num_variable', data = test_data)).__name__ == 'HConcatChart'
 
     capturedOutput = StringIO()
