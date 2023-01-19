@@ -166,8 +166,9 @@ def cat_dist_heatmap(cat_1, cat_2, data, title = '', lab_1 = None, lab_2 = None,
     altair.Chart
         A concatenated chart consists of a heatmap and 2 barcharts.
     """
-    
-def num_dist_summary(num, data, title ='', lab = None, num_on_x = True, thresh_corr = 0.0, stat = True):
+
+import altair as alt 
+def num_dist_summary(num, data, title ='', lab = None, thresh_corr = 0.0, stat = True):
     """
     Create a distribution plot of the numeric variable in general and statistical summary of the feature.
     In addition, the correlation values of the input variable with other features based on a threshold will also be returned.
@@ -194,3 +195,56 @@ def num_dist_summary(num, data, title ='', lab = None, num_on_x = True, thresh_c
     string
         correlation values to other features
     """
+    if data.shape[0] ==0 : 
+        return 'Please use a data frame with data inside.'
+    column_names = data.columns.tolist()
+    numeric_col = data.select_dtypes(include=np.number).columns.tolist()
+    if  not isinstance(num, str) :
+        return "Please enter the column name as string"
+    if  num not in column_names :
+        return  num +  " not present in the dataset"
+    elif num  not in numeric_col : 
+        return num + " is not a numeric feature " 
+    else : 
+        hist = alt.Chart(data , title = title).mark_bar().encode(
+            x = alt.X(num, bin = alt.Bin(maxbins = 20), title = lab),
+            y = alt.Y( 'count()', title = 'Count')
+        ).properties(
+            height = 300,
+            width = 300
+        )
+
+        ## find the correlation values based on the threshold and add them to the chart 
+        corr_list = ["Correlation values "]
+        for col in numeric_col : 
+            r = data[num].corr(data[col])
+            if r >= thresh_corr  and r != 1: 
+                out = col + " : " + str(round(r,2))
+                corr_list.append(out)
+                
+        if len(corr_list) > 1  : 
+            text_corr = alt.Chart({'values':[{}]}).mark_text(
+                align="left", baseline="top", fontSize=16
+                ).encode(
+                x=alt.value(40),  # pixels from left
+                y=alt.value(30),  # pixels from top
+                text=alt.value(corr_list))
+
+            if stat == True : 
+                mean = data[num].mean()
+                median = data[num].median()
+                std = data[num].std()
+                text = alt.Chart({'values':[{}]}).mark_text(
+                align="left", baseline="top", fontSize=16
+                ).encode(
+                x=alt.value(40),  # pixels from left
+                y=alt.value(30),  # pixels from top
+                text=alt.value(["Summary Statistic", f"mean: {mean:.2f}", f"median: {median:.2f}", f"std: {std:.2f}",]))
+
+                return hist |text | text_corr
+            
+            else : 
+                return hist | text_corr
+
+        return hist 
+    

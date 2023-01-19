@@ -49,3 +49,29 @@ def test_num_dist_by_cat():
     num_dist_by_cat( v_cat = 'cat_3groups', v_num = 'num', data = test_data)
     assert( capturedOutput.getvalue()[:30].strip() == 'An one-way ANOVA yields an F s'.strip())
     # sys.stdout = sys.__stdout__ # Restore the print output target
+
+
+def num_dist_summary():
+    
+    ## test to check return type when correlation and statistics is True 
+    assert type( num_dist_summary( num='num_constant', data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True)).__name__ == 'HConcatChart'
+    
+    
+    ## test to check return type when correlation and statistics is False 
+    assert type( num_dist_summary( num='num_constant', data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = False)).__name__ == 'HConcatChart'
+    
+    
+    ## test to check return type when correlation  and statistics is False
+    assert type( num_dist_summary( num='num_constant', data = test_data, title ='Distribution', lab = None, thresh_corr = 1, stat = False)).__name__ == 'Chart'
+    
+    
+    ## test to check if the input column name is string 
+    assert  num_dist_summary( num=1, data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True) == 'Please enter the column name as string'
+    
+    
+    ## test to check if the column is present in the data set
+    assert  num_dist_summary( num='abc', data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True) == 'abc not present in the dataset'
+    
+    
+    ## test to check if dataframe has any data 
+    assert num_dist_summary( num='num', data = test_data_0_group, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True) == 'Please use a data frame with data inside.'
