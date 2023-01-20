@@ -191,9 +191,9 @@ def num_dist_summary(num, data, title ='', lab = None, thresh_corr = 0.0, stat =
     Return
     ------
     altair.Chart and Table
-        A histogram chart and a table to display correlation and statistical summary
+        A histogram chart 
     string
-        correlation values to other features
+         correlation values to other features and Summary statistics 
     """
     if data.shape[0] ==0 : 
         return 'Please use a data frame with data inside.'
