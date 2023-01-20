@@ -55,7 +55,7 @@ def num_dist_by_cat(num, cat, data, title_hist ='', title_boxplot ='', lab_num =
     if num_on_x == True:
         boxplot = alt.Chart( data, title = title_boxplot).mark_boxplot( size = 50).encode(
             x = alt.X(num, scale = alt.Scale(zero = False), title = lab_num),
-            y = alt.Y( f'{v_cat}:N', title = lab_cat)
+            y = alt.Y( f'{cat}:N', title = lab_cat)
         ).properties(
             height = 300,
             width = 300
@@ -63,13 +63,13 @@ def num_dist_by_cat(num, cat, data, title_hist ='', title_boxplot ='', lab_num =
     else:
         boxplot = alt.Chart( data, title = title_boxplot).mark_boxplot( size = 50).encode(
             y = alt.Y(num, scale = alt.Scale(zero = False), title = lab_num),
-            x = alt.X( f'{v_cat}:N', title = lab_cat)
+            x = alt.X( f'{cat}:N', title = lab_cat)
         ).properties(
             height = 300,
             width = 300
         )
     
-    group_list = data[ v_cat].unique()
+    group_list = data[ cat].unique()
     n_group = len( group_list)
 
     if n_group == 0:
@@ -81,8 +81,8 @@ def num_dist_by_cat(num, cat, data, title_hist ='', title_boxplot ='', lab_num =
             if np.var(data[ num]) == 0:
                 print( 'A t test is not performed as the total variance is 0.\n')
             else:
-                group_a = data[ data[ v_cat] == group_list[ 0]]
-                group_b = data[ data[ v_cat] == group_list[ 1]]
+                group_a = data[ data[ cat] == group_list[ 0]]
+                group_b = data[ data[ cat] == group_list[ 1]]
                 t_eq, p_eq = stats.ttest_ind(group_a[ num], group_b[ num])
                 t_w, p_w = stats.ttest_ind(group_a[ num], group_b[ num], equal_var = False)
                 table = [ [ 'Equal var. assumed', t_eq, p_eq], [ 'Equal var. not assumed', t_w, p_w]]
@@ -92,7 +92,7 @@ def num_dist_by_cat(num, cat, data, title_hist ='', title_boxplot ='', lab_num =
         elif n_group > 2:
             vectors = dict()
             for i in group_list:
-                vectors[ i] = data[ data[ v_cat] == i][ num]
+                vectors[ i] = data[ data[ cat] == i][ num]
             if (np.array( [ np.var( i) for i in list( vectors.values())]) == 0).any():
                 print( 'F statistic is not defined when within group variance is 0 in at least one of the groups.\n')
             else:
@@ -105,29 +105,26 @@ def num_dist_by_cat(num, cat, data, title_hist ='', title_boxplot ='', lab_num =
     return hist | boxplot
 
 
-def num_dist_scatter(num_1, num_2, data, title ='', lab_1 = None, lab_2 = None, trend = None, band = False):
-    """
-    Creates a scatter plot given two numerical features. Plot can provide regression trendline and highlight outliers.
+def num_dist_scatter(num1, num2, data, title = '', stat = False, trend = None):
+    '''
+    Creates a scatter plot given two numerical features. Plot can provide regression trendline as linear, polynomial, or loess.
+    Statistics such as number of NaNs, mean, median, and standard deviations will be returned as options.
     Spearman and Pearson's correlation will also be returned to aid the user to determining feature relationship.
 
     Parameter
     ---------
-    num_1: string
-        Name of the column name for the first numeric feature.
-    num_2: string
-        Name of the column name for the second numeric feature.
+    num1: string
+        Name of the column for the first numeric feature.
+    num2: string
+        Name of the column for the second numeric feature.
     data: pandas.DataFrame
         Target data frame for visualization.
     title: string, default ''
         Title for the chart.
-    lab_1: string, default None
-        Axis label for the first numeric feature.
-    lab_2: string, default None
-        Axis label for the second numeric feature.
+    stat: bool, default False
+        Boolean to provide simple statistics.
     trend: string, default None
-        What type of trendline. Options are: 'None', lin', 'poly'.
-    band: boolean, default True
-        Whether to include 95% confidence interval band.
+        Type of trendline. Options are: 'None', lin', 'poly'.
     
     Return
     ------
@@ -135,7 +132,79 @@ def num_dist_scatter(num_1, num_2, data, title ='', lab_1 = None, lab_2 = None, 
         A chart consists of a scatterplot with out without trendlines.
     string
         Spearman and Pearson's correlation numbers.
-    """
+    '''
+    data1 = data.copy()
+    # check if feature is numeric
+    assert data[num1].dtype.kind in 'iufc', 'num1 column must be numeric!'
+    assert data[num2].dtype.kind in 'iufc', 'num2 column must be numeric!'
+    assert data[num1].nunique() != 1, 'num1 column is constant, consider using functions for categorical variables'
+    assert data[num2].nunique() != 1, 'num1 column is constant, consider using functions for categorical variables'
+
+    # feature statistics
+    stats_df = pd.DataFrame()
+    feat_list = [num1, num2]
+
+    for i in feat_list:
+        output = []
+        output.append(data[i].isna().sum())
+        output.append(round(np.mean(data[i]), 3))
+        output.append(np.median(data[i]))
+        output.append(round(np.std(data[i], ddof=1), 3))        # calculates sample standard deviation
+        stats_df[i] = output
+
+    stats_df = stats_df.T.rename(columns={0: 'Num NaN', 1:'Mean', 2: 'median', 3:'Stdev'})
+    if stat == True:
+        print(stats_df)
+
+    # replace NaN (if any) with mean column value
+    if stats_df.iloc[0,0] != 0:
+        data1[num1] = data1[num1].fillna(stats_df.iloc[0,1])
+        print(f'**num1 NaN replaced with mean {stats_df.iloc[0,1]:.2f}**')
+    if stats_df.iloc[1,0] != 0:
+        data1[num2] = data1[num2].fillna(stats_df.iloc[1,1])
+        print(f'**num2 NaN replaced with mean {stats_df.iloc[1,1]:.2f}**')
+
+    # correlation statistics
+    pear = stats.pearsonr(data1[num1], data1[num2])[0]
+    pear_p = stats.pearsonr(data1[num1], data1[num2])[1]
+    spear = stats.spearmanr(data1[num1], data1[num2]).correlation
+    spear_p = stats.spearmanr(data1[num1], data1[num2]).pvalue
+
+    print(f"The Pearson's correlation is {pear:.3f} with p-value of {pear_p:.3f}")
+    print(f"The Spearman's correlation is {spear:.3f} with p-value of {spear_p:.3f}")
+
+    # scatter plot
+    scatter = alt.Chart(data1).mark_point(opacity=0.8).encode(
+    alt.X(num1, title=num1),
+    alt.Y(num2, title=num2)
+    ).properties(
+        height = 500,
+        width = 500,
+        title = title
+    )
+    
+    # linear regression line
+    lr = scatter.mark_line(size=2).transform_regression(
+    num1, num2)
+
+    # polynomial line
+    poly = scatter.mark_line(size=3).transform_regression(
+    num1, num2, method='poly')
+
+    # loess line, 'locally estimated scatterplot smoothing'
+    loess = scatter.mark_line(size=3).transform_loess(
+    num1, num2)
+
+    if trend == 'lin':
+        plot = scatter + lr
+    elif trend =='poly':
+        plot = scatter + poly
+    elif trend == 'loess':
+        plot = scatter + loess
+    else:
+        plot = scatter
+
+    return plot
 
 def cat_dist_heatmap(cat_1, cat_2, data, title = '', lab_1 = None, lab_2 = None, heatmap = True, barchart = True):
     """
