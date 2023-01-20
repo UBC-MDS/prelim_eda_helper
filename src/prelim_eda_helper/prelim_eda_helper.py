@@ -55,7 +55,7 @@ def num_dist_by_cat(num, cat, data, title_hist ='', title_boxplot ='', lab_num =
     if num_on_x == True:
         boxplot = alt.Chart( data, title = title_boxplot).mark_boxplot( size = 50).encode(
             x = alt.X(num, scale = alt.Scale(zero = False), title = lab_num),
-            y = alt.Y( f'{v_cat}:N', title = lab_cat)
+            y = alt.Y( f'{cat}:N', title = lab_cat)
         ).properties(
             height = 300,
             width = 300
@@ -63,13 +63,13 @@ def num_dist_by_cat(num, cat, data, title_hist ='', title_boxplot ='', lab_num =
     else:
         boxplot = alt.Chart( data, title = title_boxplot).mark_boxplot( size = 50).encode(
             y = alt.Y(num, scale = alt.Scale(zero = False), title = lab_num),
-            x = alt.X( f'{v_cat}:N', title = lab_cat)
+            x = alt.X( f'{cat}:N', title = lab_cat)
         ).properties(
             height = 300,
             width = 300
         )
     
-    group_list = data[ v_cat].unique()
+    group_list = data[ cat].unique()
     n_group = len( group_list)
 
     if n_group == 0:
@@ -81,8 +81,8 @@ def num_dist_by_cat(num, cat, data, title_hist ='', title_boxplot ='', lab_num =
             if np.var(data[ num]) == 0:
                 print( 'A t test is not performed as the total variance is 0.\n')
             else:
-                group_a = data[ data[ v_cat] == group_list[ 0]]
-                group_b = data[ data[ v_cat] == group_list[ 1]]
+                group_a = data[ data[ cat] == group_list[ 0]]
+                group_b = data[ data[ cat] == group_list[ 1]]
                 t_eq, p_eq = stats.ttest_ind(group_a[ num], group_b[ num])
                 t_w, p_w = stats.ttest_ind(group_a[ num], group_b[ num], equal_var = False)
                 table = [ [ 'Equal var. assumed', t_eq, p_eq], [ 'Equal var. not assumed', t_w, p_w]]
@@ -92,7 +92,7 @@ def num_dist_by_cat(num, cat, data, title_hist ='', title_boxplot ='', lab_num =
         elif n_group > 2:
             vectors = dict()
             for i in group_list:
-                vectors[ i] = data[ data[ v_cat] == i][ num]
+                vectors[ i] = data[ data[ cat] == i][ num]
             if (np.array( [ np.var( i) for i in list( vectors.values())]) == 0).any():
                 print( 'F statistic is not defined when within group variance is 0 in at least one of the groups.\n')
             else:
@@ -149,7 +149,7 @@ def num_dist_scatter(num1, num2, data, title = '', stat = False, trend = None):
         output.append(data[i].isna().sum())
         output.append(round(np.mean(data[i]), 3))
         output.append(np.median(data[i]))
-        output.append(round(np.std(data[i]), 3))
+        output.append(round(np.std(data[i], ddof=1), 3))        # calculates sample standard deviation
         stats_df[i] = output
 
     stats_df = stats_df.T.rename(columns={0: 'Num NaN', 1:'Mean', 2: 'median', 3:'Stdev'})
@@ -201,6 +201,8 @@ def num_dist_scatter(num1, num2, data, title = '', stat = False, trend = None):
         plot = scatter + poly
     elif trend == 'loess':
         plot = scatter + loess
+    else:
+        plot = scatter
 
     return plot
 
