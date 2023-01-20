@@ -1,16 +1,20 @@
 import numpy as np
 import pandas as pd
 import altair as alt
+
 from scipy import stats
 from tabulate import tabulate
+
 
 def initialize_helper():
     """
     A function to enable plotting for large data sets.
     """
-    alt.data_transformers.enable( 'data_server')
+    alt.data_transformers.enable('data_server')
 
-def num_dist_by_cat(num, cat, data, title_hist ='', title_boxplot ='', lab_num = None, lab_cat = None, num_on_x = True, stat = True):
+
+def num_dist_by_cat(num, cat, data, title_hist='', title_boxplot='', lab_num=None, lab_cat=None, num_on_x=True,
+                    stat=True):
     """
     Create a pair of charts showing the distribution of the numeric variable and when grouped by the categorical variable.
     The one of the left is a histogram while the one on the left will be a boxplot on top of a violin plot.
@@ -44,68 +48,69 @@ def num_dist_by_cat(num, cat, data, title_hist ='', title_boxplot ='', lab_num =
     string
         Test statistics
     """
-    hist = alt.Chart( data, title = title_hist).mark_bar().encode(
-        x = alt.X(num, bin = alt.Bin(maxbins = 20), title = lab_num),
-        y = alt.Y( 'count()', title = lab_cat)
+    hist = alt.Chart(data, title=title_hist).mark_bar().encode(
+        x=alt.X(num, bin=alt.Bin(maxbins=20), title=lab_num),
+        y=alt.Y('count()', title=lab_cat)
     ).properties(
-        height = 300,
-        width = 300
+        height=300,
+        width=300
     )
     
     if num_on_x == True:
-        boxplot = alt.Chart( data, title = title_boxplot).mark_boxplot( size = 50).encode(
-            x = alt.X(num, scale = alt.Scale(zero = False), title = lab_num),
-            y = alt.Y( f'{cat}:N', title = lab_cat)
+        boxplot = alt.Chart(data, title=title_boxplot).mark_boxplot(size=50).encode(
+            x=alt.X(num, scale=alt.Scale(zero=False), title=lab_num),
+            y=alt.Y(f'{cat}:N', title=lab_cat)
         ).properties(
-            height = 300,
-            width = 300
+            height=300,
+            width=300
         )
     else:
-        boxplot = alt.Chart( data, title = title_boxplot).mark_boxplot( size = 50).encode(
-            y = alt.Y(num, scale = alt.Scale(zero = False), title = lab_num),
-            x = alt.X( f'{cat}:N', title = lab_cat)
+        boxplot = alt.Chart(data, title=title_boxplot).mark_boxplot(size=50).encode(
+            y=alt.Y(num, scale=alt.Scale(zero=False), title=lab_num),
+            x=alt.X(f'{cat}:N', title=lab_cat)
         ).properties(
-            height = 300,
-            width = 300
+            height=300,
+            width=300
         )
     
-    group_list = data[ cat].unique()
-    n_group = len( group_list)
-
+    group_list = data[cat].unique()
+    n_group = len(group_list)
+    
     if n_group == 0:
-        print( 'Please use a data frame with data inside.\n')
+        print('Please use a data frame with data inside.\n')
     elif n_group == 1:
-        print( 'Please consider using prelim_eda_helper.num_dist when only 1 class is used\n.')
+        print('Please consider using prelim_eda_helper.num_dist when only 1 class is used\n.')
     elif stat == True:
         if n_group == 2:
-            if np.var(data[ num]) == 0:
-                print( 'A t test is not performed as the total variance is 0.\n')
+            if np.var(data[num]) == 0:
+                print('A t test is not performed as the total variance is 0.\n')
             else:
-                group_a = data[ data[ cat] == group_list[ 0]]
-                group_b = data[ data[ cat] == group_list[ 1]]
-                t_eq, p_eq = stats.ttest_ind(group_a[ num], group_b[ num])
-                t_w, p_w = stats.ttest_ind(group_a[ num], group_b[ num], equal_var = False)
-                table = [ [ 'Equal var. assumed', t_eq, p_eq], [ 'Equal var. not assumed', t_w, p_w]]
-                print( f'A t-test assuming equal variance yields a t value of {t_eq:.2f} with a p-value of {p_eq:.4f}.')
-                print( f'Assuming inequal variances, the Welch\'s t-test yields a t value of {t_w:.2f} with a p-value of {p_w:.4f}.')
-                print( tabulate( table, headers = [ 'Test', 't', 'p']))
+                group_a = data[data[cat] == group_list[0]]
+                group_b = data[data[cat] == group_list[1]]
+                t_eq, p_eq = stats.ttest_ind(group_a[num], group_b[num])
+                t_w, p_w = stats.ttest_ind(group_a[num], group_b[num], equal_var=False)
+                table = [['Equal var. assumed', t_eq, p_eq], ['Equal var. not assumed', t_w, p_w]]
+                print(f'A t-test assuming equal variance yields a t value of {t_eq:.2f} with a p-value of {p_eq:.4f}.')
+                print(
+                    f'Assuming inequal variances, the Welch\'s t-test yields a t value of {t_w:.2f} with a p-value of {p_w:.4f}.')
+                print(tabulate(table, headers=['Test', 't', 'p']))
         elif n_group > 2:
             vectors = dict()
             for i in group_list:
-                vectors[ i] = data[ data[ cat] == i][ num]
-            if (np.array( [ np.var( i) for i in list( vectors.values())]) == 0).any():
-                print( 'F statistic is not defined when within group variance is 0 in at least one of the groups.\n')
+                vectors[i] = data[data[cat] == i][num]
+            if (np.array([np.var(i) for i in list(vectors.values())]) == 0).any():
+                print('F statistic is not defined when within group variance is 0 in at least one of the groups.\n')
             else:
-                F, p = stats.f_oneway( *[ list( i) for i in vectors.values()])
-                table = [ [ 'One-way ANOVA', F, p]]
-                print( f'An one-way ANOVA yields an F score of {F:.2f} with a p-value of {p:.4f}.')
-                print( tabulate( table, headers = [ 'Test', 'F', 'p']))
+                F, p = stats.f_oneway(*[list(i) for i in vectors.values()])
+                table = [['One-way ANOVA', F, p]]
+                print(f'An one-way ANOVA yields an F score of {F:.2f} with a p-value of {p:.4f}.')
+                print(tabulate(table, headers=['Test', 'F', 'p']))
         print()
-        
+    
     return hist | boxplot
 
 
-def num_dist_scatter(num1, num2, data, title = '', stat = False, trend = None):
+def num_dist_scatter(num1, num2, data, title='', stat=False, trend=None):
     '''
     Creates a scatter plot given two numerical features. Plot can provide regression trendline as linear, polynomial, or loess.
     Statistics such as number of NaNs, mean, median, and standard deviations will be returned as options.
@@ -139,77 +144,80 @@ def num_dist_scatter(num1, num2, data, title = '', stat = False, trend = None):
     assert data[num2].dtype.kind in 'iufc', 'num2 column must be numeric!'
     assert data[num1].nunique() != 1, 'num1 column is constant, consider using functions for categorical variables'
     assert data[num2].nunique() != 1, 'num1 column is constant, consider using functions for categorical variables'
-
+    
     # feature statistics
     stats_df = pd.DataFrame()
     feat_list = [num1, num2]
-
+    
     for i in feat_list:
         output = []
         output.append(data[i].isna().sum())
         output.append(round(np.mean(data[i]), 3))
         output.append(np.median(data[i]))
-        output.append(round(np.std(data[i], ddof=1), 3))        # calculates sample standard deviation
+        output.append(round(np.std(data[i], ddof=1), 3))  # calculates sample standard deviation
         stats_df[i] = output
-
-    stats_df = stats_df.T.rename(columns={0: 'Num NaN', 1:'Mean', 2: 'median', 3:'Stdev'})
+    
+    stats_df = stats_df.T.rename(columns={0: 'Num NaN', 1: 'Mean', 2: 'median', 3: 'Stdev'})
     if stat == True:
         print(stats_df)
-
+    
     # replace NaN (if any) with mean column value
-    if stats_df.iloc[0,0] != 0:
-        data1[num1] = data1[num1].fillna(stats_df.iloc[0,1])
-        print(f'**num1 NaN replaced with mean {stats_df.iloc[0,1]:.2f}**')
-    if stats_df.iloc[1,0] != 0:
-        data1[num2] = data1[num2].fillna(stats_df.iloc[1,1])
-        print(f'**num2 NaN replaced with mean {stats_df.iloc[1,1]:.2f}**')
-
+    if stats_df.iloc[0, 0] != 0:
+        data1[num1] = data1[num1].fillna(stats_df.iloc[0, 1])
+        print(f'**num1 NaN replaced with mean {stats_df.iloc[0, 1]:.2f}**')
+    if stats_df.iloc[1, 0] != 0:
+        data1[num2] = data1[num2].fillna(stats_df.iloc[1, 1])
+        print(f'**num2 NaN replaced with mean {stats_df.iloc[1, 1]:.2f}**')
+    
     # correlation statistics
     pear = stats.pearsonr(data1[num1], data1[num2])[0]
     pear_p = stats.pearsonr(data1[num1], data1[num2])[1]
     spear = stats.spearmanr(data1[num1], data1[num2]).correlation
     spear_p = stats.spearmanr(data1[num1], data1[num2]).pvalue
-
+    
     print(f"The Pearson's correlation is {pear:.3f} with p-value of {pear_p:.3f}")
     print(f"The Spearman's correlation is {spear:.3f} with p-value of {spear_p:.3f}")
-
+    
     # scatter plot
     scatter = alt.Chart(data1).mark_point(opacity=0.8).encode(
-    alt.X(num1, title=num1),
-    alt.Y(num2, title=num2)
+        alt.X(num1, title=num1),
+        alt.Y(num2, title=num2)
     ).properties(
-        height = 500,
-        width = 500,
-        title = title
+        height=500,
+        width=500,
+        title=title
     )
     
     # linear regression line
     lr = scatter.mark_line(size=2).transform_regression(
-    num1, num2)
-
+        num1, num2)
+    
     # polynomial line
     poly = scatter.mark_line(size=3).transform_regression(
-    num1, num2, method='poly')
-
+        num1, num2, method='poly')
+    
     # loess line, 'locally estimated scatterplot smoothing'
     loess = scatter.mark_line(size=3).transform_loess(
-    num1, num2)
-
+        num1, num2)
+    
     if trend == 'lin':
         plot = scatter + lr
-    elif trend =='poly':
+    elif trend == 'poly':
         plot = scatter + poly
     elif trend == 'loess':
         plot = scatter + loess
     else:
         plot = scatter
-
+    
     return plot
 
-def cat_dist_heatmap(cat_1, cat_2, data, title = '', lab_1 = None, lab_2 = None, heatmap = True, barchart = True):
+
+def cat_dist_heatmap(cat_1, cat_2, data, title=None,
+                     lab_1=None, lab_2=None, heatmap=True, barchart=True):
     """
-    Create concatenated charts showing the heatmap of two categorical variables and the barcharts for occurrance of these variables.
-    Heatmap will be on the left and the two barcharts will be on the right in the same column.
+    Create concatenated charts showing the heatmap of two categorical variables and the bar charts for occurrence of
+    these variables.
+    Heatmap will be on the left and the two bar charts will be on the right in the same column.
 
     Parameter
     ---------
@@ -233,10 +241,53 @@ def cat_dist_heatmap(cat_1, cat_2, data, title = '', lab_1 = None, lab_2 = None,
     Return
     ------
     altair.Chart
-        A concatenated chart consists of a heatmap and 2 barcharts.
+        A concatenated chart consists of a heatmap and 2 bar charts.
     """
+    # Sanity check
+    n_rows = data.shape[0]
+    if data[cat_1].nunique() == n_rows:
+        raise Exception(f"{cat_1} does not appear to be a valid categorical column. Please double check the input.")
+    if data[cat_2].nunique() == n_rows:
+        raise Exception(f"{cat_2} does not appear to be a valid categorical column. Please double check the input.")
     
-def num_dist_summary(num, data, title ='', lab = None, num_on_x = True, thresh_corr = 0.0, stat = True):
+    # # Alternative option: check if the column has category datatype, but it won't fit in our test dataframe
+    # categorical_columns = data.select_dtypes(include='category').columns
+    # if data[cat_1].name not in categorical_columns:
+    #     raise Exception(f"{cat_1} does not appear to be a valid categorical column. Please double check the input.")
+    # if data[cat_2].name not in categorical_columns:
+    #     raise Exception(f"{cat_2} does not appear to be a valid categorical column. Please double check the input.")
+    
+    if not title:
+        title = f"{cat_1} vs. {cat_2}"
+    cat_heatmap = alt.Chart(data).mark_rect().encode(
+        x=alt.X(cat_1, axis=alt.Axis(title=lab_1)),
+        y=alt.Y(cat_2, axis=alt.Axis(title=lab_2)),
+        color='count()').properties(
+        height=300,
+        width=300
+    )
+    cat_barcharts = alt.Chart(data).mark_bar().encode(
+        x='count()',
+        y=alt.X(cat_1, axis=alt.Axis(title=lab_1)),
+        color=cat_1
+    ).facet(
+        row=cat_2
+    ).properties(
+        height=300,
+        width=300
+    )
+    if heatmap and barchart:
+        concat_chart = alt.hconcat(cat_heatmap, cat_barcharts, title=title)
+        return concat_chart
+    elif heatmap:
+        return cat_heatmap
+    elif barchart:
+        return cat_barcharts
+    else:
+        raise Exception("At least one of the plot options (heatmap or barchart) needs to be selected (set to TRUE).")
+
+
+def num_dist_summary(num, data, title='', lab=None, num_on_x=True, thresh_corr=0.0, stat=True):
     """
     Create a distribution plot of the numeric variable in general and statistical summary of the feature.
     In addition, the correlation values of the input variable with other features based on a threshold will also be returned.
