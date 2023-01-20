@@ -167,7 +167,7 @@ def cat_dist_heatmap(cat_1, cat_2, data, title = '', lab_1 = None, lab_2 = None,
         A concatenated chart consists of a heatmap and 2 barcharts.
     """
 
-import altair as alt 
+# +
 def num_dist_summary(num, data, title ='', lab = None, thresh_corr = 0.0, stat = True):
     """
     Create a distribution plot of the numeric variable in general and statistical summary of the feature.
@@ -215,36 +215,26 @@ def num_dist_summary(num, data, title ='', lab = None, thresh_corr = 0.0, stat =
         )
 
         ## find the correlation values based on the threshold and add them to the chart 
-        corr_list = ["Correlation values "]
+        corr_list = [["Feature ", "Correlation value"]]
         for col in numeric_col : 
             r = data[num].corr(data[col])
             if r >= thresh_corr  and r != 1: 
-                out = col + " : " + str(round(r,2))
+                out = [col , round(r,2)]
                 corr_list.append(out)
+        
                 
         if len(corr_list) > 1  : 
-            text_corr = alt.Chart({'values':[{}]}).mark_text(
-                align="left", baseline="top", fontSize=16
-                ).encode(
-                x=alt.value(40),  # pixels from left
-                y=alt.value(30),  # pixels from top
-                text=alt.value(corr_list))
+            print("The correlation values with are as follows :","\n")
+            print(tabulate(corr_list,headers='firstrow') ,"\n") 
 
-            if stat == True : 
-                mean = data[num].mean()
-                median = data[num].median()
-                std = data[num].std()
-                text = alt.Chart({'values':[{}]}).mark_text(
-                align="left", baseline="top", fontSize=16
-                ).encode(
-                x=alt.value(40),  # pixels from left
-                y=alt.value(30),  # pixels from top
-                text=alt.value(["Summary Statistic", f"mean: {mean:.2f}", f"median: {median:.2f}", f"std: {std:.2f}",]))
-
-                return hist |text | text_corr
-            
-            else : 
-                return hist | text_corr
-
+        if stat == True : 
+            mean = data[num].mean()
+            median = data[num].median()
+            std = data[num].std()
+            print("Statistical Summary is as : ")
+            stat = [['mean', mean], ['median', median],['standard deviated', std] ]
+            print(tabulate(stat) ,"\n") 
         return hist 
     
+
+
