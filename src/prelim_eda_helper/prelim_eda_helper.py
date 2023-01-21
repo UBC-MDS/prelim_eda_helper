@@ -175,8 +175,10 @@ def num_dist_scatter(num1, num2, data, title='', stat=False, trend=None):
     spear = stats.spearmanr(data1[num1], data1[num2]).correlation
     spear_p = stats.spearmanr(data1[num1], data1[num2]).pvalue
     
-    print(f"The Pearson's correlation is {pear:.3f} with p-value of {pear_p:.3f}")
-    print(f"The Spearman's correlation is {spear:.3f} with p-value of {spear_p:.3f}")
+    table = [ [ 'Pearson\'s', f'{pear:.3f}', f'{pear_p:.3f}'], [ 'Spearman\'s', f'{spear:.3f}', f'{spear_p:.3f}']]
+    print(f"The Pearson's correlation is {pear:.3f} with p-value of {pear_p:.3f}.")
+    print(f"The Spearman's correlation is {spear:.3f} with p-value of {spear_p:.3f}.")
+    print( tabulate( table, headers = [ '', 'Correlation', 'p']))
     
     # scatter plot
     scatter = alt.Chart(data1).mark_point(opacity=0.8).encode(
