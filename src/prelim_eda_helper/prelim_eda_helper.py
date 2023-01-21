@@ -288,7 +288,7 @@ def cat_dist_heatmap(cat_1, cat_2, data, title=None,
         return cat_barcharts
     else:
         raise Exception("At least one of the plot options (heatmap or barchart) needs to be selected (set to TRUE).")
-        
+
 
 def num_dist_summary(num, data, title='', lab=None, thresh_corr=0.0, stat=True):
     """
@@ -331,11 +331,11 @@ def num_dist_summary(num, data, title='', lab=None, thresh_corr=0.0, stat=True):
     
     ## check if stat is boolean 
     if not isinstance(stat, bool) :
-        return "Please enter the value for stat be true or false"
+        return "Please enter the value for stat be  as boolean true or false"
     
     
     ## check if label is string 
-    if lab != None and ( not isinstance(stat, bool)) : 
+    if lab != None and ( not isinstance(lab, bool)) : 
         return "Please enter axis label as string"
     
 
