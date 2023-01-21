@@ -245,6 +245,8 @@ def cat_dist_heatmap(cat_1, cat_2, data, title=None,
     """
     # Sanity check
     n_rows = data.shape[0]
+    if n_rows < 1:
+        raise Exception(f"Dataset must have at least one row of data.")
     if data[cat_1].nunique() == n_rows:
         raise Exception(f"{cat_1} does not appear to be a valid categorical column. Please double check the input.")
     if data[cat_2].nunique() == n_rows:
@@ -259,6 +261,10 @@ def cat_dist_heatmap(cat_1, cat_2, data, title=None,
     
     if not title:
         title = f"{cat_1} vs. {cat_2}"
+    if not lab_1:
+        lab_1 = cat_1
+    if not lab_2:
+        lab_2 = cat_2
     cat_heatmap = alt.Chart(data).mark_rect().encode(
         x=alt.X(cat_1, axis=alt.Axis(title=lab_1)),
         y=alt.Y(cat_2, axis=alt.Axis(title=lab_2)),
@@ -272,9 +278,6 @@ def cat_dist_heatmap(cat_1, cat_2, data, title=None,
         color=cat_1
     ).facet(
         row=cat_2
-    ).properties(
-        height=300,
-        width=300
     )
     if heatmap and barchart:
         concat_chart = alt.hconcat(cat_heatmap, cat_barcharts, title=title)
