@@ -34,8 +34,8 @@ def test_num_dist_by_cat():
     captured_output = StringIO()
     sys.stdout = captured_output
     num_dist_by_cat(cat='cat_1', num='num_variable', data=test_data)
-    assert (
-                captured_output.getvalue().strip() == 'Please consider using prelim_eda_helper.num_dist when only 1 class is used\n.'.strip())
+    assert (captured_output.getvalue().strip() == 'Please consider using prelim_eda_helper.num_dist when only 1 '
+                                                  'class is used\n.'.strip())
     
     captured_output = StringIO()
     sys.stdout = captured_output
@@ -50,9 +50,8 @@ def test_num_dist_by_cat():
     captured_output = StringIO()
     sys.stdout = captured_output
     num_dist_by_cat(cat='cat_3', num='num_variance', data=test_data)
-    assert (
-                captured_output.getvalue().strip() == 'F statistic is not defined when within group variance is 0 in '
-                                                     'at least one of the groups.\n'.strip()) 
+    assert (captured_output.getvalue().strip() == 'F statistic is not defined when within group variance is 0 in '
+                                                  'at least one of the groups.\n'.strip())
     
     captured_output = StringIO()
     sys.stdout = captured_output
