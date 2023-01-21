@@ -195,8 +195,29 @@ def num_dist_summary(num, data, title ='', lab = None, thresh_corr = 0.0, stat =
     string
          correlation values to other features and Summary statistics 
     """
+    ## check if data is present
     if data.shape[0] ==0 : 
         return 'Please use a data frame with data inside.'
+    
+    ## check if thresh_corris numeric 
+    if  not isinstance(thresh_corr, (int, float,  complex)) : 
+        return 'Please use a numeric value for threshold'
+    
+    ## check if title is string
+    if not isinstance(title, str) :
+        return "Please enter the title as string"
+    
+    ## check if stat is boolean 
+    if not isinstance(stat, bool) :
+        return "Please enter the value for stat be true or false"
+    
+    
+    ## check if label is string 
+    if lab != None and ( not isinstance(stat, bool)) : 
+        return "Please enter axis label as string"
+    
+    
+    
     column_names = data.columns.tolist()
     numeric_col = data.select_dtypes(include=np.number).columns.tolist()
     if  not isinstance(num, str) :
