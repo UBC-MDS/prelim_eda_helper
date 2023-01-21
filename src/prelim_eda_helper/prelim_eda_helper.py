@@ -89,7 +89,7 @@ def num_dist_by_cat(num, cat, data, title_hist='', title_boxplot='', lab_num=Non
                 group_b = data[data[cat] == group_list[1]]
                 t_eq, p_eq = stats.ttest_ind(group_a[num], group_b[num])
                 t_w, p_w = stats.ttest_ind(group_a[num], group_b[num], equal_var=False)
-                table = [['Equal var. assumed', t_eq, p_eq], ['Equal var. not assumed', t_w, p_w]]
+                table = [['Equal var. assumed', f'{t_eq:.2f}', f'{p_eq:.4f}'], ['Equal var. not assumed', f'{t_w:.2f}', f'{p_w:.4f}']]
                 print(f'A t-test assuming equal variance yields a t value of {t_eq:.2f} with a p-value of {p_eq:.4f}.')
                 print(
                     f'Assuming inequal variances, the Welch\'s t-test yields a t value of {t_w:.2f} with a p-value of {p_w:.4f}.')
@@ -277,9 +277,9 @@ def cat_dist_heatmap(cat_1, cat_2, data, title=None,
     cat_barcharts = alt.Chart(data).mark_bar().encode(
         x='count()',
         y=alt.X(cat_1, axis=alt.Axis(title=lab_1)),
-        color=cat_1
+        color=alt.Color(cat_1, legend=alt.Legend(title=lab_1))
     ).facet(
-        row=cat_2
+        row=alt.Facet(cat_2, title=lab_2)
     )
     if heatmap and barchart:
         concat_chart = alt.hconcat(cat_heatmap, cat_barcharts, title=title)
