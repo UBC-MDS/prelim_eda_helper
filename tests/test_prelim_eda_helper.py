@@ -103,3 +103,53 @@ def test_num_dist_scatter():
     sys.stdout = captured_output
     num_dist_scatter('num_variable', 'num_na', test_data, title='test', stat=True)
     assert captured_output.getvalue().strip()[-5:] == '0.140', "Spearman's correlation p-value incorrect!"
+
+
+class CatDistHeatmapTest(unittest.TestCase):
+    def test_exc(self):
+        with self.assertRaises(Exception) as context:
+            cat_dist_heatmap(cat_1='cat_1', cat_2='cat_2', data=test_data_empty, heatmap=True, barchart=True)
+        self.assertTrue("Dataset must have at least one row of data." in context.exception.__str__())
+
+        with self.assertRaises(Exception) as context:
+            cat_dist_heatmap(cat_1='num_variable', cat_2='cat_2', data=test_data, heatmap=True, barchart=True)
+        self.assertTrue("num_variable does not appear to be a valid categorical column. Please double check the "
+                        "input." in context.exception.__str__())
+
+        with self.assertRaises(Exception) as context:
+            cat_dist_heatmap(cat_1='cat_1', cat_2='cat_2', data=test_data, heatmap=False, barchart=False)
+        self.assertTrue("At least one of the plot options (heatmap or barchart) needs to be selected (set to TRUE)."
+                        in context.exception.__str__())
+
+    def test_heatmap(self):
+        output_chart = cat_dist_heatmap(cat_1='cat_1', cat_2='cat_2', data=test_data, heatmap=True, barchart=False)
+        output_chart_json = output_chart.to_dict()
+
+        self.assertTrue(output_chart_json['mark'] == 'rect')
+        self.assertTrue(output_chart_json['encoding']['color']['aggregate'] == 'count')
+        self.assertTrue(output_chart_json['encoding']['color']['type'] == 'quantitative')
+        self.assertTrue(output_chart_json['encoding']['x']['axis']['title'] == 'cat_1')
+        self.assertTrue(output_chart_json['encoding']['x']['field'] == 'cat_1')
+        self.assertTrue(output_chart_json['encoding']['y']['axis']['title'] == 'cat_2')
+        self.assertTrue(output_chart_json['encoding']['y']['field'] == 'cat_2')
+
+    def test_barcharts(self):
+        # test parameters
+        cat_1 = 'cat_4'
+        cat_2 = 'cat_5'
+        
+        # run func to get output
+        output_chart = cat_dist_heatmap(cat_1='cat_4', cat_2='cat_5', data=test_data, heatmap=False, barchart=True)
+        output_chart_json = output_chart.to_dict()
+
+        self.assertTrue(output_chart_json['spec']['mark'] == 'bar')
+        self.assertTrue(output_chart_json['spec']['encoding']['x']['aggregate'] == 'count')
+        self.assertTrue(output_chart_json['spec']['encoding']['x']['type'] == 'quantitative')
+        self.assertTrue(output_chart_json['spec']['encoding']['y']['axis']['title'] == cat_1)
+        self.assertTrue(output_chart_json['spec']['encoding']['y']['field'] == cat_1)
+        self.assertTrue(output_chart_json['spec']['encoding']['color']['field'] == cat_1)
+        self.assertTrue(output_chart_json['facet']['row']['field'] == cat_2)
+
+
+if __name__ == '__main__':
+    unittest.main()
