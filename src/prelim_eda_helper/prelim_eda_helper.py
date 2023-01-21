@@ -368,7 +368,7 @@ def num_dist_summary(num, data, title='', lab=None, thresh_corr=0.0, stat=True):
         
                 
         if len(corr_list) > 1  : 
-            print("The correlation values with are as follows :","\n")
+            print(f"These features below are possibly correlated with {num}:","\n")
             print(tabulate(corr_list,headers='firstrow') ,"\n") 
 
         if stat == True : 
