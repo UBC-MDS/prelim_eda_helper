@@ -153,28 +153,29 @@ class CatDistHeatmapTest(unittest.TestCase):
 
 def num_dist_summary():
     
-    ## test to check return type when correlation and statistics is True 
-    assert type( num_dist_summary( num='num_constant', data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True)).__name__ == 'HConcatChart'
-    
-    
-    ## test to check return type when correlation and statistics is False 
-    assert type( num_dist_summary( num='num_constant', data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = False)).__name__ == 'HConcatChart'
-    
-    
-    ## test to check return type when correlation  and statistics is False
+    assert type( num_dist_summary( num='num_constant', data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True)).__name__ == 'Chart'
+    assert  num_dist_summary( num='abc', data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True) == 'abc not present in the dataset' 
+    assert type( num_dist_summary( num='num_constant', data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = False)).__name__ == 'Chart' 
     assert type( num_dist_summary( num='num_constant', data = test_data, title ='Distribution', lab = None, thresh_corr = 1, stat = False)).__name__ == 'Chart'
+    assert  num_dist_summary( num = 1, data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True) == 'Please enter the column name as string'
+    assert num_dist_summary( num='num_constant', data = test_data_empty, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True) == 'Please use a data frame with data inside.'
+    assert  num_dist_summary( num='num_constant', data = test_data, title = 1, lab = None, thresh_corr = 0.2, stat = True) == "Please enter the title as string"
+    assert  num_dist_summary( num='num_constant', data = test_data, title = 'Distribution', lab = 1, thresh_corr = 0.2, stat = True) == "Please enter axis label as string"
+    assert  num_dist_summary( num='num_constant', data = test_data, title = 'Distribution', lab = 1, thresh_corr = 0.2, stat = False) == "Please enter the value for stat be true or false"
+    assert num_dist_summary( num='num_constant', data = test_data, title = 'Distribution', lab = 'p', thresh_corr = '0.2', stat = True) =='Please use a numeric value for threshold'
     
     
-    ## test to check if the input column name is string 
-    assert  num_dist_summary( num=1, data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True) == 'Please enter the column name as string'
-    
-    
-    ## test to check if the column is present in the data set
-    assert  num_dist_summary( num='abc', data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True) == 'abc not present in the dataset'
-    
-    
-    ## test to check if dataframe has any data 
-    assert num_dist_summary( num='num', data = test_data_0_group, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True) == 'Please use a data frame with data inside.'
+    output_chart =  num_dist_summary( num='num_constant', data = test_data, title ='Distribution', lab = "Numeric", thresh_corr = 0.2, stat = True)
+    output_chart_json = output_chart.to_dict()
+
+
+    assert output_chart_json['mark']  == 'bar'
+    assert output_chart_json['title'] =='Distribution'
+    assert output_chart_json['encoding']['x']['field']  == 'num_constant'
+    assert output_chart_json['encoding']['x']['title']  == 'Numeric'
+    assert output_chart_json['encoding']['y']['aggregate']  == 'count'
+    assert output_chart_json['encoding']['y']['type'] == 'quantitative'
+    assert output_chart_json['encoding']['y']['title'] == 'Count'
 
 if __name__ == '__main__':
     unittest.main()
