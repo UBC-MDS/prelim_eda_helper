@@ -175,9 +175,9 @@ def num_dist_scatter(num1, num2, data, title='', stat=False, trend=None):
     spear = stats.spearmanr(data1[num1], data1[num2]).correlation
     spear_p = stats.spearmanr(data1[num1], data1[num2]).pvalue
     
-    table = [ [ 'Pearson\'s', f'{pear:.3f}', f'{pear_p:.3f}'], [ 'Spearman\'s', f'{spear:.3f}', f'{spear_p:.3f}']]
-    print(f"The Pearson's correlation is {pear:.3f} with p-value of {pear_p:.3f}.")
-    print(f"The Spearman's correlation is {spear:.3f} with p-value of {spear_p:.3f}.")
+    table = [ [ 'Pearson\'s', f'{pear:.2f}', f'{pear_p:.4f}'], [ 'Spearman\'s', f'{spear:.2f}', f'{spear_p:.4f}']]
+    print(f"The Pearson's correlation is {pear:.2f} with p-value of {pear_p:.4f}.")
+    print(f"The Spearman's correlation is {spear:.2f} with p-value of {spear_p:.4f}.")
     print( tabulate( table, headers = [ '', 'Correlation', 'p']))
     
     # scatter plot
@@ -185,8 +185,8 @@ def num_dist_scatter(num1, num2, data, title='', stat=False, trend=None):
         alt.X(num1, title=num1),
         alt.Y(num2, title=num2)
     ).properties(
-        height=500,
-        width=500,
+        height=300,
+        width=300,
         title=title
     )
     
@@ -376,6 +376,6 @@ def num_dist_summary(num, data, title='', lab=None, thresh_corr=0.0, stat=True):
             median = data[num].median()
             std = data[num].std()
             print("Statistical Summary is as : ")
-            stat = [['mean', mean], ['median', median],['standard deviated', std] ]
+            stat = [['mean', f'{mean:.2f}'], ['median', f'{median:.2f}'],['standard deviated', f'{std:.2f}'] ]
             print(tabulate(stat) ,"\n") 
         return hist
