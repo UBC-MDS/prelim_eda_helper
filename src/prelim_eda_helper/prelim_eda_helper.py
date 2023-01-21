@@ -288,9 +288,9 @@ def cat_dist_heatmap(cat_1, cat_2, data, title=None,
         return cat_barcharts
     else:
         raise Exception("At least one of the plot options (heatmap or barchart) needs to be selected (set to TRUE).")
+        
 
-
-def num_dist_summary(num, data, title='', lab=None, num_on_x=True, thresh_corr=0.0, stat=True):
+def num_dist_summary(num, data, title='', lab=None, thresh_corr=0.0, stat=True):
     """
     Create a distribution plot of the numeric variable in general and statistical summary of the feature.
     In addition, the correlation values of the input variable with other features based on a threshold will also be returned.
@@ -313,7 +313,67 @@ def num_dist_summary(num, data, title='', lab=None, num_on_x=True, thresh_corr=0
     Return
     ------
     altair.Chart and Table
-        A histogram chart and a table to display correlation and statistical summary
+        A histogram chart 
     string
-        correlation values to other features
+         correlation values to other features and Summary statistics 
     """
+    ## check if data is present
+    if data.shape[0] ==0 : 
+        return 'Please use a data frame with data inside.'
+    
+    ## check if thresh_corris numeric 
+    if  not isinstance(thresh_corr, (int, float,  complex)) : 
+        return 'Please use a numeric value for threshold'
+    
+    ## check if title is string
+    if not isinstance(title, str) :
+        return "Please enter the title as string"
+    
+    ## check if stat is boolean 
+    if not isinstance(stat, bool) :
+        return "Please enter the value for stat be true or false"
+    
+    
+    ## check if label is string 
+    if lab != None and ( not isinstance(stat, bool)) : 
+        return "Please enter axis label as string"
+    
+
+    column_names = data.columns.tolist()
+    numeric_col = data.select_dtypes(include=np.number).columns.tolist()
+    if  not isinstance(num, str) :
+        return "Please enter the column name as string"
+    if  num not in column_names :
+        return  num +  " not present in the dataset"
+    elif num  not in numeric_col : 
+        return num + " is not a numeric feature " 
+    else : 
+        hist = alt.Chart(data , title = title).mark_bar().encode(
+            x = alt.X(num, bin = alt.Bin(maxbins = 20), title = lab),
+            y = alt.Y( 'count()', title = 'Count')
+        ).properties(
+            height = 300,
+            width = 300
+        )
+
+        ## find the correlation values based on the threshold and add them to the chart 
+        corr_list = [["Feature ", "Correlation value"]]
+        for col in numeric_col : 
+            r = data[num].corr(data[col])
+            if r >= thresh_corr  and r != 1: 
+                out = [col , round(r,2)]
+                corr_list.append(out)
+        
+                
+        if len(corr_list) > 1  : 
+            print("The correlation values with are as follows :","\n")
+            print(tabulate(corr_list,headers='firstrow') ,"\n") 
+
+        if stat == True : 
+            mean = data[num].mean()
+            median = data[num].median()
+            std = data[num].std()
+            print("Statistical Summary is as : ")
+            stat = [['mean', mean], ['median', median],['standard deviated', std] ]
+            print(tabulate(stat) ,"\n") 
+        return hist

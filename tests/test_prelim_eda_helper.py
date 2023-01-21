@@ -151,5 +151,30 @@ class CatDistHeatmapTest(unittest.TestCase):
         self.assertTrue(output_chart_json['facet']['row']['field'] == cat_2)
 
 
+def num_dist_summary():
+    
+    ## test to check return type when correlation and statistics is True 
+    assert type( num_dist_summary( num='num_constant', data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True)).__name__ == 'HConcatChart'
+    
+    
+    ## test to check return type when correlation and statistics is False 
+    assert type( num_dist_summary( num='num_constant', data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = False)).__name__ == 'HConcatChart'
+    
+    
+    ## test to check return type when correlation  and statistics is False
+    assert type( num_dist_summary( num='num_constant', data = test_data, title ='Distribution', lab = None, thresh_corr = 1, stat = False)).__name__ == 'Chart'
+    
+    
+    ## test to check if the input column name is string 
+    assert  num_dist_summary( num=1, data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True) == 'Please enter the column name as string'
+    
+    
+    ## test to check if the column is present in the data set
+    assert  num_dist_summary( num='abc', data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True) == 'abc not present in the dataset'
+    
+    
+    ## test to check if dataframe has any data 
+    assert num_dist_summary( num='num', data = test_data_0_group, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True) == 'Please use a data frame with data inside.'
+
 if __name__ == '__main__':
     unittest.main()
