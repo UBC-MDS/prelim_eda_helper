@@ -139,6 +139,18 @@ tomli = {version = "*", optional = true, markers = "python_full_version <= \"3.1
 toml = ["tomli"]
 
 [[package]]
+name = "docutils"
+version = "0.19"
+description = "Docutils -- Python Documentation Utilities"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "docutils-0.19-py3-none-any.whl", hash = "sha256:5e1de4d849fee02c63b040a4a3fd567f4ab104defd8a5511fbbc24a8a017efbc"},
+    {file = "docutils-0.19.tar.gz", hash = "sha256:33995a6753c30b7f577febfc2c50411fec6aac7f7ffeb7c4cfe5991072dcf9e6"},
+]
+
+[[package]]
 name = "entrypoints"
 version = "0.4"
 description = "Discover and load entry points from installed packages."
@@ -581,6 +593,20 @@ files = [
 ]
 
 [[package]]
+name = "statistics"
+version = "1.0.3.5"
+description = "A Python 2.* port of 3.4 Statistics Module"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "statistics-1.0.3.5.tar.gz", hash = "sha256:2dc379b80b07bf2ddd5488cad06b2b9531da4dd31edb04dc9ec0dc226486c138"},
+]
+
+[package.dependencies]
+docutils = ">=0.3"
+
+[[package]]
 name = "tabulate"
 version = "0.9.0"
 description = "Pretty-print tabular data"
@@ -643,4 +669,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9, <3.12"
-content-hash = "7da6ddab6e44875aa8cefd1c745357d79b8e9803f7003cb042e6b176abcdcd5e"
+content-hash = "9ba380c620f6087a749ce77b07b5f61b9574a0d76f18f2526cb2330e351f0eb2"
