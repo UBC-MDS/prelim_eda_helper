@@ -23,9 +23,9 @@ def num_dist_by_cat(num, cat, data, title_hist='', title_boxplot='', lab_num=Non
     Parameter
     ---------
     num: string
-        Name of the column name for the numeric variable.
+        Column name for the numeric variable.
     cat: string
-        Name of the column name for the categorial variable.
+        Column name for the categorial variable.
     data: pandas.DataFrame
         Target data frame for visualization.
     title_hist: string, default ''
