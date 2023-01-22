@@ -19,13 +19,21 @@ To achive this goal, `prelim_eda_helper` creates charts with the visualization l
 $ pip install prelim_eda_helper
 ```
 
+### `initialize_helper`
+
+Enables plotting data sets with more than 5000 rows.
+
+```py
+initialize_helper()
+```
+
 ### `num_dist_by_cat`
 
 Creates a pair of plots showing the distribution of the numeric variable when grouped by the categorical variable. Output includes a histogram and boxplot. In addition, basic test statistics will be provided for user reference.
 
 ```py
 from prelim_eda_helper import num_dist_by_cat
-num_dist_by_cat(v_num = 'x', v_cat = 'group', data = data, title_hist = 'Distribution of X', title_boxplot = 'X Seperated by Group', lab_num = 'X', lab_cat = 'Group', num_on_x = True, stat = True)
+num_dist_by_cat(num = 'x', cat = 'group', data = data, title_hist = 'Distribution of X', title_boxplot = 'X Seperated by Group', lab_num = 'X', lab_cat = 'Group', num_on_x = True, stat = True)
 ```
 
 ### `num_dist_scatter`
@@ -34,7 +42,7 @@ Creates a scatter plot given two numerical variables. The plot can provide regre
 
 ```py
 from prelim_eda_helper import num_dist_scatter
-num_dist_scatter(num1 = 'x', num2 = 'y', data = data, title = 'Scatter plot with X and Y', lab_num1 = 'X', lab_num2 = 'Y', trend = None, band = False)
+num_dist_scatter(num1 = 'x', num2 = 'y', data = data, title = 'Scatter plot with X and Y', stat = False, trend = None)
 ```
 
 ### `cat_dist_heatmap`
@@ -43,7 +51,7 @@ Creates concatenated charts showing the heatmap of two categorical variables and
 
 ```py
 from prelim_eda_helper import cat_dist_heatmap
-cat_dist_heatmap(cat1 = 'group1', cat2 = 'group2', data = data, title = 'How are Group1 and Group2 distributed?', lab_cat1 = 'group1', lab_cat2 = 'group2', heatmap = True, barchart = True)
+cat_dist_heatmap(cat_1 = 'group1', cat_2 = 'group2', data = data, title = 'How are Group1 and Group2 distributed?', lab_1 = 'group1', lab_2 = 'group2', heatmap = True, barchart = True)
 ```
 
 ### `num_dist_summary`
@@ -52,7 +60,7 @@ Creates a distribution plot of the given numeric variable and provides a statist
 
 ```py
 from prelim_eda_helper import num_dist_summary
-num_dist_summary(col_num = 'x', data = data, title = 'Distribution of X', lab_num = 'X',  num_on_x = True, thresh_corr = 0.0, stat = True )
+num_dist_summary(num = 'x', data = data, title = 'Distribution of X', lab = 'X', thresh_corr = 0.0, stat = True )
 ```
 
 ## Contributing
