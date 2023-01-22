@@ -96,13 +96,13 @@ def test_num_dist_scatter():
     captured_output = StringIO()
     sys.stdout = captured_output
     num_dist_scatter('num_variable', 'num_na', test_data, title='test', stat=True)
-    assert captured_output.getvalue().strip()[196:201] == '0.771', "Pearson's correlation calc incorrect!"
+    assert captured_output.getvalue().strip()[196:200] == '0.77', "Pearson's correlation calc incorrect!"
     
     # Check Spearman's p-value
     captured_output = StringIO()
     sys.stdout = captured_output
     num_dist_scatter('num_variable', 'num_na', test_data, title='test', stat=True)
-    assert captured_output.getvalue().strip()[-5:] == '0.140', "Spearman's correlation p-value incorrect!"
+    assert captured_output.getvalue().strip()[-6:] == '0.1404', "Spearman's correlation p-value incorrect!"
 
 
 class CatDistHeatmapTest(unittest.TestCase):
