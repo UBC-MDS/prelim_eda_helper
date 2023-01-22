@@ -89,7 +89,7 @@ def num_dist_by_cat(num, cat, data, title_hist='', title_boxplot='', lab_num=Non
                 group_b = data[data[cat] == group_list[1]]
                 t_eq, p_eq = stats.ttest_ind(group_a[num], group_b[num])
                 t_w, p_w = stats.ttest_ind(group_a[num], group_b[num], equal_var=False)
-                table = [['Equal var. assumed', t_eq, p_eq], ['Equal var. not assumed', t_w, p_w]]
+                table = [['Equal var. assumed', f'{t_eq:.2f}', f'{p_eq:.4f}'], ['Equal var. not assumed', f'{t_w:.2f}', f'{p_w:.4f}']]
                 print(f'A t-test assuming equal variance yields a t value of {t_eq:.2f} with a p-value of {p_eq:.4f}.')
                 print(
                     f'Assuming inequal variances, the Welch\'s t-test yields a t value of {t_w:.2f} with a p-value of {p_w:.4f}.')
@@ -175,16 +175,18 @@ def num_dist_scatter(num1, num2, data, title='', stat=False, trend=None):
     spear = stats.spearmanr(data1[num1], data1[num2]).correlation
     spear_p = stats.spearmanr(data1[num1], data1[num2]).pvalue
     
-    print(f"The Pearson's correlation is {pear:.3f} with p-value of {pear_p:.3f}")
-    print(f"The Spearman's correlation is {spear:.3f} with p-value of {spear_p:.3f}")
+    table = [ [ 'Pearson\'s', f'{pear:.2f}', f'{pear_p:.4f}'], [ 'Spearman\'s', f'{spear:.2f}', f'{spear_p:.4f}']]
+    print(f"The Pearson's correlation is {pear:.2f} with p-value of {pear_p:.4f}.")
+    print(f"The Spearman's correlation is {spear:.2f} with p-value of {spear_p:.4f}.")
+    print( tabulate( table, headers = [ '', 'Correlation', 'p']))
     
     # scatter plot
     scatter = alt.Chart(data1).mark_point(opacity=0.8).encode(
         alt.X(num1, title=num1),
         alt.Y(num2, title=num2)
     ).properties(
-        height=500,
-        width=500,
+        height=300,
+        width=300,
         title=title
     )
     
@@ -275,9 +277,9 @@ def cat_dist_heatmap(cat_1, cat_2, data, title=None,
     cat_barcharts = alt.Chart(data).mark_bar().encode(
         x='count()',
         y=alt.X(cat_1, axis=alt.Axis(title=lab_1)),
-        color=cat_1
+        color=alt.Color(cat_1, legend=alt.Legend(title=lab_1))
     ).facet(
-        row=cat_2
+        row=alt.Facet(cat_2, title=lab_2)
     )
     if heatmap and barchart:
         concat_chart = alt.hconcat(cat_heatmap, cat_barcharts, title=title)
@@ -366,7 +368,7 @@ def num_dist_summary(num, data, title='', lab=None, thresh_corr=0.0, stat=True):
         
                 
         if len(corr_list) > 1  : 
-            print("The correlation values with are as follows :","\n")
+            print(f"These features below are possibly correlated with {num}:","\n")
             print(tabulate(corr_list,headers='firstrow') ,"\n") 
 
         if stat == True : 
@@ -374,6 +376,6 @@ def num_dist_summary(num, data, title='', lab=None, thresh_corr=0.0, stat=True):
             median = data[num].median()
             std = data[num].std()
             print("Statistical Summary is as : ")
-            stat = [['mean', mean], ['median', median],['standard deviated', std] ]
+            stat = [['mean', f'{mean:.2f}'], ['median', f'{median:.2f}'],['standard deviated', f'{std:.2f}'] ]
             print(tabulate(stat) ,"\n") 
         return hist
