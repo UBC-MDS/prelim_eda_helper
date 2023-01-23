@@ -176,8 +176,8 @@ def num_dist_scatter(num1, num2, data, title='', stat=False, trend=None):
     spear_p = stats.spearmanr(data1[num1], data1[num2]).pvalue
     
     table = [ [ 'Pearson\'s', f'{pear:.2f}', f'{pear_p:.4f}'], [ 'Spearman\'s', f'{spear:.2f}', f'{spear_p:.4f}']]
-    print(f"The Pearson's correlation is {pear:.2f} with p-value of {pear_p:.4f}.")
-    print(f"The Spearman's correlation is {spear:.2f} with p-value of {spear_p:.4f}.")
+    #print(f"The Pearson's correlation is {pear:.2f} with p-value of {pear_p:.4f}.")
+    #print(f"The Spearman's correlation is {spear:.2f} with p-value of {spear_p:.4f}.")
     print( tabulate( table, headers = [ '', 'Correlation', 'p']))
     
     # scatter plot
