@@ -96,7 +96,7 @@ def test_num_dist_scatter():
     captured_output = StringIO()
     sys.stdout = captured_output
     num_dist_scatter('num_variable', 'num_na', test_data, title='test', stat=True)
-    assert captured_output.getvalue().strip()[196:200] == '0.77', "Pearson's correlation calc incorrect!"
+    assert captured_output.getvalue().strip()[256:260] == '0.77', "Pearson's correlation calc incorrect!"
     
     # Check Spearman's p-value
     captured_output = StringIO()
