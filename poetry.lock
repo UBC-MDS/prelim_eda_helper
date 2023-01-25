@@ -1918,6 +1918,22 @@ files = [
 ]
 
 [[package]]
+name = "palmerpenguins"
+version = "0.1.4"
+description = "A python package for the palmer penguins dataset"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "palmerpenguins-0.1.4-py3-none-any.whl", hash = "sha256:63c904db3dcef10e4ff1372f9b7f50a8f44c7364cc03f27f9a487fe5762d159c"},
+    {file = "palmerpenguins-0.1.4.tar.gz", hash = "sha256:d04d9064930e053fb0805261fe2aa26b4581fdabacaa54d393ddd65bb93bbaf2"},
+]
+
+[package.dependencies]
+numpy = "*"
+pandas = "*"
+
+[[package]]
 name = "pandas"
 version = "1.5.2"
 description = "Powerful data structures for data analysis, time series, and statistics"
@@ -2756,18 +2772,6 @@ cryptography = ">=2.0"
 jeepney = ">=0.6"
 
 [[package]]
-name = "semantic-release"
-version = "0.1.0"
-description = ""
-category = "main"
-optional = false
-python-versions = ">=3.6,<4.0"
-files = [
-    {file = "semantic-release-0.1.0.tar.gz", hash = "sha256:943c4d2f5bf2f42958c1868f3c5ccabfcade6017d9d7562192d24053fb2c8efa"},
-    {file = "semantic_release-0.1.0-py3-none-any.whl", hash = "sha256:ac7bbd0aaf3bad04d812fae2979386388c9c9a1af489ed97f3fdbaa24eef2a2b"},
-]
-
-[[package]]
 name = "semver"
 version = "2.13.0"
 description = "Python helper for Semantic Versioning (http://semver.org/)"
@@ -3541,4 +3545,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9, <3.12"
-content-hash = "2f60b73e2fc5631c406915b30eceeb91b47a47965c32054667ec6aa9cc779d50"
+content-hash = "426ce3d981b57437e6759c178872d5f1b85b81088df805d5eb7c3ec826b71eaf"
