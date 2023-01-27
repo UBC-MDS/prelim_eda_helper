@@ -182,8 +182,8 @@ def num_dist_scatter(num1, num2, data, title='', stat=False, trend=None):
     
     # scatter plot
     scatter = alt.Chart(data1).mark_point(opacity=0.8).encode(
-        alt.X(num1, title=num1),
-        alt.Y(num2, title=num2)
+        alt.X(num1, title=num1, scale=alt.Scale(zero=False)),
+        alt.Y(num2, title=num2, scale=alt.Scale(zero=False))
     ).properties(
         height=300,
         width=300,
@@ -191,15 +191,15 @@ def num_dist_scatter(num1, num2, data, title='', stat=False, trend=None):
     )
     
     # linear regression line
-    lr = scatter.mark_line(size=2).transform_regression(
+    lr = scatter.mark_line(size=2, color='red').transform_regression(
         num1, num2)
     
     # polynomial line
-    poly = scatter.mark_line(size=3).transform_regression(
+    poly = scatter.mark_line(size=3, color='red').transform_regression(
         num1, num2, method='poly')
     
     # loess line, 'locally estimated scatterplot smoothing'
-    loess = scatter.mark_line(size=3).transform_loess(
+    loess = scatter.mark_line(size=3, color='red').transform_loess(
         num1, num2)
     
     if trend == 'lin':
