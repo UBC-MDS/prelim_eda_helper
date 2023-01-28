@@ -337,7 +337,7 @@ def num_dist_summary(num, data, title='', lab=None, thresh_corr=0.0, stat=True):
     
     
     ## check if label is string 
-    if lab != None and ( not isinstance(lab, bool)) : 
+    if lab != None and ( not isinstance(lab, str)) : 
         return "Please enter axis label as string"
     
 

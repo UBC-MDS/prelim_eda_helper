@@ -161,11 +161,10 @@ def test_num_dist_summary():
     assert num_dist_summary( num='num_constant', data = test_data_empty, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True) == 'Please use a data frame with data inside.'
     assert  num_dist_summary( num='num_constant', data = test_data, title = 1, lab = None, thresh_corr = 0.2, stat = True) == "Please enter the title as string"
     assert  num_dist_summary( num='num_constant', data = test_data, title = 'Distribution', lab = 1, thresh_corr = 0.2, stat = True) == "Please enter axis label as string"
-    assert  num_dist_summary( num='num_constant', data = test_data, title = 'Distribution', lab = 1, thresh_corr = 0.2, stat = False) == "Please enter the value for stat be true or false"
+    assert  num_dist_summary( num='num_constant', data = test_data, title = 'Distribution', lab = None, thresh_corr = 0.2, stat = 'False') == "Please enter the value for stat be  as boolean true or false"
     assert num_dist_summary( num='num_constant', data = test_data, title = 'Distribution', lab = 'p', thresh_corr = '0.2', stat = True) =='Please use a numeric value for threshold'
     
-    
-    output_chart =  num_dist_summary( num='num_constant', data = test_data, title ='Distribution', lab = "Numeric", thresh_corr = 0.2, stat = True)
+    output_chart =  num_dist_summary( num='num_constant', data = test_data, title ='Distribution', lab = "Numeric", thresh_corr = 1, stat = False)
     output_chart_json = output_chart.to_dict()
 
 
@@ -176,6 +175,7 @@ def test_num_dist_summary():
     assert output_chart_json['encoding']['y']['aggregate']  == 'count'
     assert output_chart_json['encoding']['y']['type'] == 'quantitative'
     assert output_chart_json['encoding']['y']['title'] == 'Count'
+   
 
 if __name__ == '__main__':
     unittest.main()
