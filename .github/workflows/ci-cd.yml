@@ -63,6 +63,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Temporality disable "include adminstrators" branch protection
+        uses: benjefferies/branch-protection-bot@master
+        if: always()
+        with
+          access-token: ${{ secrets.SEMANTIC_TOKEN }}
+
       - name: Install poetry
         uses: snok/install-poetry@v1
 
@@ -77,6 +83,14 @@ jobs:
             git config user.name ${{ github.actor }}
             git config user.email ${{ github.actor }}@github.com
             poetry run semantic-release publish
+
+      - name: Enable "include administrators" branch protection
+        uses: benjefferies/branch-protection-bot@master
+        if: always()
+        with:
+          access-token: ${{ secrets.SEMANTIC_TOKEN}}
+          owner: UBC-MDS
+          repo: prelim_eda_helper
 
 # # @TODO: uncomment when registered on pypi
 #      - name: Publish to TestPyPI
