@@ -4,7 +4,7 @@ import statistics
 import pandas as pd
 
 from io import StringIO
-from prelim_eda_helper.prelim_eda_helper import num_dist_by_cat, cat_dist_heatmap, num_dist_scatter
+from prelim_eda_helper.prelim_eda_helper import num_dist_by_cat, cat_dist_heatmap, num_dist_scatter, num_dist_summary
 
 test_data_empty = pd.DataFrame({'cat_empty': [], 'num_empty': []})
 
@@ -151,7 +151,7 @@ class CatDistHeatmapTest(unittest.TestCase):
         self.assertTrue(output_chart_json['facet']['row']['field'] == cat_2)
 
 
-def num_dist_summary():
+def test_num_dist_summary():
     
     assert type( num_dist_summary( num='num_constant', data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True)).__name__ == 'Chart'
     assert  num_dist_summary( num='abc', data = test_data, title ='Distribution', lab = None, thresh_corr = 0.2, stat = True) == 'abc not present in the dataset' 
