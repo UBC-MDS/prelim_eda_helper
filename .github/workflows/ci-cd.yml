@@ -67,7 +67,7 @@ jobs:
         uses: benjefferies/branch-protection-bot@master
         if: always()
         with:
-          access-token: ${{ secrets.SEMANTIC_TOKEN }}
+          access-token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Install poetry
         uses: snok/install-poetry@v1
