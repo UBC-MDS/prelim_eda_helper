@@ -66,7 +66,7 @@ jobs:
       - name: Temporality disable "include adminstrators" branch protection
         uses: benjefferies/branch-protection-bot@master
         if: always()
-        with
+        with:
           access-token: ${{ secrets.SEMANTIC_TOKEN }}
 
       - name: Install poetry
