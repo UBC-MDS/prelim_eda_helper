@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+# Add permission to the job
+permissions: write-all
+
 jobs:
   ci:
     # Set up operating system
@@ -41,9 +44,6 @@ jobs:
         run: poetry run make html --directory docs/
 
   cd:
-    # Add permission to the job
-    permissions: write-all
-
     # Only run this job if the "ci" job passes
     needs: ci
 
