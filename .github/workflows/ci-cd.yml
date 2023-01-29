@@ -44,7 +44,6 @@ jobs:
         run: poetry run make html --directory docs/
 
   cd:
-    # Only run this job if the "ci" job passes
     needs: ci
 
     # Only run this job if new work is pushed to "main"
