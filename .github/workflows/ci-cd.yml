@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - m3-pypi
   pull_request:
     branches:
       - main
@@ -86,7 +87,6 @@ jobs:
             git config user.name ${{ github.actor }}
             git config user.email ${{ github.actor }}@github.com
             poetry run semantic-release publish
-
       # - name: Enable "include administrators" branch protection
       #   uses: benjefferies/branch-protection-bot@master
       #   if: always()
@@ -95,24 +95,25 @@ jobs:
       #     owner: UBC-MDS
       #     repo: prelim_eda_helper
 
-     - name: Publish to TestPyPI
-       uses: pypa/gh-action-pypi-publish@release/v1
-       with:
-         user: __token__
-         password: ${{ secrets.TEST_PYPI_TOKEN }}
-         repository_url: https://test.pypi.org/legacy/
+# # @TODO: uncomment when registered on pypi
+      - name: Publish to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
 
-     - name: Test install from TestPyPI
-       run: |
-           pip install \
-           --index-url https://test.pypi.org/simple/ \
-           --extra-index-url https://pypi.org/simple \
-           prelim_eda_helper
+      - name: Test install from TestPyPI
+        run: |
+            pip install \
+            --index-url https://test.pypi.org/simple/ \
+            --extra-index-url https://pypi.org/simple \
+            prelim_eda_helper
 
-     - name: Publish to PyPI
-       uses: pypa/gh-action-pypi-publish@release/v1
-       with:
-         user: __token__
-         password: ${{ secrets.PYPI_TOKEN }}
-
-
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_TOKEN }}
+#
+#
