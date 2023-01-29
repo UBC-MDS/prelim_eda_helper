@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+# Add permission to the job
+# permissions: write-all
+
 jobs:
   ci:
     # Set up operating system
@@ -45,8 +48,8 @@ jobs:
     needs: ci
 
     # Only run this job if new work is pushed to "main"
-    if:
-      - github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # if:
+    #   - github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     # Set up operating system
     runs-on: ubuntu-latest
@@ -63,6 +66,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      # - name: Temporality disable "include adminstrators" branch protection
+      #   uses: benjefferies/branch-protection-bot@master
+      #   if: always()
+      #   with:
+      #     access_token: ${{ secrets.ACCESS_TOKEN }}
+
       - name: Install poetry
         uses: snok/install-poetry@v1
 
@@ -77,6 +86,14 @@ jobs:
             git config user.name ${{ github.actor }}
             git config user.email ${{ github.actor }}@github.com
             poetry run semantic-release publish
+
+      # - name: Enable "include administrators" branch protection
+      #   uses: benjefferies/branch-protection-bot@master
+      #   if: always()
+      #   with:
+      #     access_token: ${{ secrets.SEMANTIC_TOKEN}}
+      #     owner: UBC-MDS
+      #     repo: prelim_eda_helper
 
 # # @TODO: uncomment when registered on pypi
 #      - name: Publish to TestPyPI
@@ -98,3 +115,5 @@ jobs:
 #        with:
 #          user: __token__
 #          password: ${{ secrets.PYPI_API_TOKEN }}
+#
+#
