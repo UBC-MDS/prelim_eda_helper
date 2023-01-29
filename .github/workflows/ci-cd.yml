@@ -42,8 +42,8 @@ jobs:
 
   cd:
     # Add permission to the job
-    permission: write-all
-    
+    permissions: write-all
+
     # Only run this job if the "ci" job passes
     needs: ci
 
