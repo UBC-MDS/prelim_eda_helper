@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - m3-pypi
   pull_request:
     branches:
       - main
