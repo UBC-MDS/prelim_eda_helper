@@ -67,7 +67,7 @@ jobs:
         uses: benjefferies/branch-protection-bot@master
         if: always()
         with:
-          access-token: ${{ secrets.ACCESS_TOKEN }}
+          access_token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Install poetry
         uses: snok/install-poetry@v1
@@ -88,7 +88,7 @@ jobs:
         uses: benjefferies/branch-protection-bot@master
         if: always()
         with:
-          access-token: ${{ secrets.SEMANTIC_TOKEN}}
+          access_token: ${{ secrets.SEMANTIC_TOKEN}}
           owner: UBC-MDS
           repo: prelim_eda_helper
 
