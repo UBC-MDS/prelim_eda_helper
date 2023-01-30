@@ -1,3 +1,6 @@
+![badge](https://github.com/UBC-MDS/prelim_eda_helper/actions/workflows/ci-cd.yml/badge.svg)
+[![codecov](https://codecov.io/gh/UBC-MDS/prelim_eda_helper/branch/main/graph/badge.svg?token=lLORi4M0LA)](https://codecov.io/gh/UBC-MDS/prelim_eda_helper)
+
 # prelim_eda_helper
 
 This package is a preliminary exploratory data analysis (EDA) tool to make useful feature EDA plots and provide relevant information to simplify an otherwise tedious EDA step of any data science project. Specifically this package allows users to target any two features, whether they are numeric or categorical, and create visualization plots supplemented with useful summary and test statistics.
