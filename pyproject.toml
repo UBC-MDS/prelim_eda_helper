@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "prelim_eda_helper"
-version = "0.1.7"
+version = "0.1.8"
 description = "A preliminary EDA helper."
 authors = ["Mehwish, Man Fung Morris CHAN, Xinru LU, Austin SHIH"]
 license = "MIT"
